@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Administrar Servicios</title>
+  <link rel="stylesheet" href="/resources/css/buscador.css" />
+</head>
+<body>
+  <div>
+    <div class="centro">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <button style="background-color: transparent; border-style: none; cursor: pointer;" id="btn_regresar">
+          <img src="/resources/assets/cerrar.png" alt=""/>
+        </button> 
+        <button id="btn_agregar" style="background-color: #4CAF50; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 10px; margin-right: 50px;">
+          Agregar servicio
+        </button>
+      </div>
+      <div id="main">
+        <h1 style="font-size: 50px">Administrar Servicios</h1>
+        <div class="tabla">
+          <table>
+            <thead>
+              <tr class="Encabezados">
+                <td class="Tipos">Id</td>
+                <td class="Tipos">Servicio</td>
+                <td class="Tipos">Descripción</td>
+                <td class="Tipos">Precio</td>
+                <td class="Tipos">Opciones</td>
+              </tr>
+            </thead>
+            <tbody id="servicios-tbody">
+            
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    document.getElementById('btn_regresar').addEventListener('click', function() {
+      window.location.href = '/auth/utilidades_admin/';
+    });
+
+    document.getElementById('btn_agregar').addEventListener('click', function() {
+      window.location.href = '/auth/utilidades_admin/vistacrud_Servicios/agregar_servicios'; 
+    });
+
+    function irEditarServicio(){
+      window.location.href = '/auth/utilidades_admin/vistacrud_Servicios/editar_servicios';
+    };
+
+
+    fetch('/api/servicios')
+      .then(response => response.json())
+      .then(data => {
+        const tbody = document.getElementById('servicios-tbody');
+        tbody.innerHTML = ''; // Limpiar cualquier contenido previo
+        data.forEach(servicio => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td class="relleno">${servicio.id_Servicio}</td>
+            <td class="relleno">${servicio.nombre_Servicio}</td>
+            <td class="relleno">${servicio.desc_Servicio}</td>
+            <td class="relleno">${servicio.precio}</td>
+            
+            <td class="relleno" style="display:flex; margin:0px;">
+              <button style="background-color: transparent; border-style: none; cursor: pointer; class="btn_modificar"; onclick="irEditarServicio()"">
+                <img class="anadir" src="/resources/assets/editar.png" alt="">
+              </button>
+              <button style="background-color: transparent; border-style: none; cursor: pointer;" class="btn_eliminar" data-id="${servicio.id_Servicio}">
+                <img class="anadir" src="/resources/assets/eliminar.png" alt="">
+              </button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+
+        const botonesEliminar = document.querySelectorAll('.btn_eliminar');
+        botonesEliminar.forEach(boton => {
+          boton.addEventListener('click', function() {
+            const id_Servicio = this.getAttribute('data-id');
+            fetch(`/servicios/${id_Servicio}`, {
+              method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+              if (data.mensaje === 'Servicio eliminado con éxito') {
+                alert('Servicio eliminado con éxito');
+                location.reload(); 
+              } else {
+                alert('Error al eliminar servicio');
+              }
+            })
+            .catch(error => console.error('Error:', error));
+          });
+        });
+      })
+      .catch(error => console.error('Error al obtener los servicios:', error));
+  </script>
+</body>
+</html>

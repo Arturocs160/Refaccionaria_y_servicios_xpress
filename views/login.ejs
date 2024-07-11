@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="/resources/css/login.css">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  </head>
+  <body>
+    <div>
+      <div class="centro">
+        <h2>Inicio de sesión para administrador</h2>
+        <h3>Usuario</h3>
+        <div class="input-box">
+          <form action="/auth" method="post">
+            <img src="/resources/assets/avatar.png" alt="imagen avatar" type="image"/>
+            <input type="text" placeholder="Name" name="usuario" id="usuario" required/>
+          </div>
+          <h3 id="title2">Contraseña</h3>
+          <div class="input-box">
+            <img src="/resources/assets/candado.png" alt="imagen candado" type="image" />
+            <input type="password" placeholder="***********" name="contrasenia" id="contrasenia" required/>
+          </div>
+          <button type="submit" id="sign-up">Iniciar sesión</button>
+        </form>
+        <!--caja blanca**/-->
+        <div>
+          <p>¿No tienes cuenta? <a href="/registro_admin">Registrarse</a></p>
+        </div>
+      </div>
+    </div>
+  </body>  
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+  <% if (typeof alert != "undefined")  { %>
+    <script>
+    Swal.fire({
+      title:'<%= alertTitle %>',
+      text:'<%= alertMessage %>',
+      icon:'<%= alertIcon %>',
+      showConfirmButton: <%= showConfirmButton %>,
+      timer: <%= timer %>
+    }).then(()=>{
+      window.location.href='<%= ruta %>'
+    })
+    </script>
+  <% } %>
+  
+</html>
+
+

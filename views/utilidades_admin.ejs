@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Utilidades administrador</title>
+    <link rel="stylesheet" href="/resources/css/styles_utilidades.css" />
+  </head>
+  <body>
+    <div class="principal">
+      <h2>Bienvenido "Administrador"</h2>
+      <div class="container">
+        <div class="container__items button">
+          <div>
+            <button style="background-color: transparent; border-style: none; cursor: pointer;" id="btn_regresar"><img src="/resources/assets/cerrar.png" alt=""/></button> 
+          </div>
+          <button id="btn_editarProductos" class="items__button button">
+            Administrar Productos
+          </button>
+          <button id="btn_editarServicios" class="items__button button">
+            Administrar Servicios
+          </button>
+          <button class="items__button button">
+            Reporte de citas
+          </button>
+          <button class="items__button">Ver registro completo</button>
+        </div>
+      
+      </div>
+    </div>
+  </body>
+  <script>
+    document.getElementById('btn_regresar').addEventListener('click',function(){
+      window.location.href = '/login_admin';
+    })
+
+    document.getElementById('btn_editarProductos').addEventListener('click',function(){
+      window.location.href = '/auth/utilidades_admin/vistacrud';
+    })
+    
+    document.getElementById('btn_editarServicios').addEventListener('click',function(){
+      window.location.href = '/auth/utilidades_admin/vistacrud_Servicios';
+    })
+  </script>
+</html>

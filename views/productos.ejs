@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/resources/css/global.css">
+    <link rel="stylesheet" href="/resources/css/productos.css">
+    <title>Productos </title>
+</head>
+<body>
+    <header>
+        <img src="/resources/assets/logo.png" alt="logo Refaccionaría y servicios Xpress">
+        <input type="checkbox" id="check">
+        <label for="check" class="mostrar-menu">
+            &#8801
+        </label> 
+         <nav class="menu">
+            <a href="/">Inicio</a>
+            <a href="/servicios">Servicios</a>
+            <a href="/cita">Cita</a>   
+            <a href="/productos">Productos</a>
+            <a href="/nosotros">Nosotros</a>
+            <a href="/contacto">Contacto</a>
+        <label for="check" class="esconder-menu">
+            &#215
+        </label>
+    </nav>
+    </header>
+    <div class="nombresec">
+        <h1>Productos</h1>
+    </div>
+    <div class="container">
+        <!-- <div class="decate">
+            <div class="cate">
+             <h3>Categorias</h3>
+             <h5>categoria1</h5>
+             <h5>categoria1</h5>
+             <h5>categoria1</h5>
+            </div>
+        </div> -->
+            <div class="izproduc">
+                <div class="cards-container" id="productos-lista"></div>
+                
+            </div>
+            </div>
+            <footer>
+                <div class="contacto">
+                    <p>Contacto </p>
+                    <p>Telefono</p>
+                    <p>correo electronico</p>
+                </div>
+                <div class="redes">
+                    <p>Siguenos: </p>
+                    <img src="/resources/assets/facebook.png" alt="">
+                    <img src="/resources/assets/instagram.png" alt="">
+                    <img src="/resources/assets/twitter.png" alt="">
+                    <img src="/resources/assets/youtube.png" alt="">
+                </div>
+            </footer>
+            <script>
+            fetch('/api/productos')
+            .then(response => response.json())
+            .then(productos => {
+                const productosLista = document.getElementById('productos-lista');
+                productos.forEach(producto => {
+                    const productoCard = document.createElement('div');
+                    productoCard.className = 'card';
+                    productoCard.innerHTML = `
+                        <h2>${producto.nombre_Produc}</h2>
+                        <p>Descripción: ${producto.desc_Produc}</p>
+                        <p>Precio: $${producto.precio}</p>
+                    `;
+                    productosLista.appendChild(productoCard);
+                });
+            })
+            .catch(error => console.error('Error fetching productos:', error));
+              </script>
+</body>
+</html>
+

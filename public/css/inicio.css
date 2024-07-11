@@ -1,0 +1,137 @@
+
+.presentacion{
+    padding: 0px 70px;
+    background-image: url(/resources/assets/fondo.jpeg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 50vh;
+}
+.contenido{
+    position: relative;
+    color: white;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.contenido h1{
+    font-size: 70px;
+}
+.contenido h2{
+    font-size: 50px;
+}
+
+
+#blanco {
+    width: 300px;
+    height: 80px;
+    background-color: rgb(242,242,242);
+    padding: 10px 10px;
+    border-radius: 50px;
+    margin-top: 40px;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;    
+   
+}
+#blanco a{
+     font-size: 30px;
+    color:rgb(217,50,50); 
+    text-decoration: none;
+}
+#blanco:hover{
+    background-color: rgb(217,50,50);
+    transition: 0.8s;
+}
+#blanco a:hover{
+    font-size: 30px;
+    color:white; 
+    text-decoration: none;
+}
+.informacion {
+    width: 80%;
+    height: 400px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 2% 10%;
+    background-color: rgb(217,217,217);
+}
+
+.informacion img{
+    width: 500px;
+    height: 400px;
+}
+
+.descripción{
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 50px;
+}
+.descripción h3{
+    font-size: 40px;
+    text-align: center;
+}
+
+
+
+
+@media(max-width:800px){
+    .contenido{
+        position: inherit;
+    }
+.contenido h1{
+    font-size: 45px;
+    text-align: left;
+
+}
+.contenido h2{
+    font-size: 30px;
+}
+#blanco{
+    width: 170px;
+    height: 40px;
+}
+#blanco a{
+    font-size: 15px;
+}
+
+#blanco a:hover{
+   font-size: 15px;
+
+}
+.informacion{
+    flex-direction: column;
+}
+
+.informacion {
+    width: 60%;
+    height: 550px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 2% 20%;
+    background-color: rgb(217,217,217);
+}
+
+.informacion img{
+    width: 470px;
+    height: 350px;
+}
+
+.descripción{
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 95px;
+}
+.descripción h3{
+    font-size: 20px;
+    text-align: center;
+}
+}

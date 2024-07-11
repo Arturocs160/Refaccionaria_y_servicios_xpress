@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edicion de servicios</title>
+    <link rel="stylesheet" href="/resources/css/styles.css" />
+  </head>
+  <body>
+    <div class="contenedor">
+      <div class="contenedor__img">
+        <a>
+          <img style="background-color: transparent; border-style: none; cursor: pointer;" src="/resources/assets/cerrar.png" id="btn_regreso" class="contenedor__img--cierre"
+        /></a>
+      </div>
+      <div><img src="/resources/assets/img1.png" /></div>
+      <div class="contenedor__items">
+        <form action="/servicios" method="post" >
+        <label for="">
+          Servicio:
+          <input required class="" type="text" placeholder="Servicio" name="nombre_Servicio"  id="nombre_Servicio"/>
+        </label>
+      </div>
+      <div class="contenedor__items contenedor__items--2">
+        <label>
+          Descripcion:
+          <input class="" type="text" placeholder="Descripcion" name="desc_Servicio" id="desc_Servicio" />
+        </label>
+      </div>
+
+      <div class="contenedor__items">
+        <label>
+          Precio:
+          <input class="" type="number" placeholder="$" name="precio" id="precio"/>
+        </label>
+      </div>
+      <button class="button">Guardar</button>
+    </div>
+  </form>
+  </body>
+
+  <script>
+    document.getElementById('btn_regreso').addEventListener('click',function(){
+      window.location.href = '/auth/utilidades_admin/vistacrud_Servicios';
+    })
+  </script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+  <% if (typeof alert != "undefined")  { %>
+    <script>
+    Swal.fire({
+      title:'<%= alertTitle %>',
+      text:'<%= alertMessage %>',
+      icon:'<%= alertIcon %>',
+      showConfirmButton: <%= showConfirmButton %>,
+      timer: <%= timer %>
+    }).then(()=>{
+      window.location.href='<%= ruta %>'
+    })
+    </script>
+  <% } %>

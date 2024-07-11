@@ -1,0 +1,152 @@
+body {
+  background-color: rgb(255, 255, 255);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 80px;
+  font-family: sans-serif;
+}
+h4 {
+  margin: 0;
+}
+.centro {
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f2f2f2;
+  height: 400px;
+  width: 800px;
+  border-radius: 20px;
+  border: black solid 1px;
+  margin-top: 80px;
+}
+#botones {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  width: 30%;
+}
+
+#boton1 {
+  padding: 8px 15px;
+  border-radius: 30px;
+  border: none;
+  color: #d93232;
+  border: #d93232 solid 2px;
+  cursor: pointer;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+#boton2 {
+  padding: 8px 15px;
+  border-radius: 30px;
+  border: none;
+  color: #f2f2f2;
+  background-color: #d93232;
+  cursor: pointer;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+.registros_items {
+  display: inline-block;
+  margin: 0 15px;
+  margin: 30px 40px;
+}
+.input {
+  background-color: #fff;
+  border-radius: 20px;
+  border: none;
+  height: 25px;
+  width: 200px;
+}
+.button {
+  padding: 8px 15px;
+  border-radius: 15px;
+  border: none;
+  color: #f2f2f2;
+  background-color: #d93232;
+  cursor: pointer;
+  margin: 0px 310px;
+}
+@media(max-width:600px){
+  body{
+  width: 100vw;
+  background-color: black;
+    margin: auto;
+  }
+  .contenedor{
+    margin: auto;
+    width: 100vw;
+  }
+  .centro {
+    padding-top: 20px;
+    display: flex;
+    align-items: center;
+    background-color: #f2f2f2;
+    height: 80vh;
+    width: 90vw;
+    border-radius: 20px;
+    border: black solid 1px;
+    margin: 70px;
+    margin-top: 50px;
+    margin-left: 90px;
+  }
+  #botones {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    width: 60vw;
+    margin-top: 100px;
+    margin-bottom: 60px;
+  }
+  #boton1 {
+    padding: 5px 12px;
+    border-radius: 30px;
+    border: none;
+    color: #d93232;
+    border: #d93232 solid 2px;
+    cursor: pointer;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  }
+  
+  #boton2 {
+    padding: 5px 12px;
+    border-radius: 30px;
+    border: none;
+    color: #f2f2f2;
+    background-color: #d93232;
+    cursor: pointer;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  }
+  .registros{
+    
+  
+    margin-left: 70px;
+
+  }
+  .registros_items {
+    display: flex;
+    width: 30vw;
+    margin: auto;
+    justify-content: start;
+    align-items: center;
+    margin-top: 20px;
+    margin-left: 260px;
+    margin-bottom: 20px;
+    
+  }
+  .button {
+    padding: 8px 15px;
+    border-radius: 15px;
+    border: none;
+    color: #f2f2f2;
+    background-color: #d93232;
+    cursor: pointer;
+    margin: 0px 310px;
+    margin-top: 20px;
+  }
+}

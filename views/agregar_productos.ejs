@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar productos</title>
+    <link rel="stylesheet" href="/resources/css/styles.css" />
+  </head>
+  <body>
+    <div class="contenedor">
+      <div class="contenedor__img">
+        <img style="background-color: transparent; border-style: none; cursor: pointer;" src="/resources/assets/cerrar.png" id="btn_regreso" class="contenedor__img--cierre"
+        />
+      </div>
+      <div><img src="/resources/assets/img1.png" /></div>
+      <div class="contenedor__items">
+        <form action="/productos" method="post" >
+        <label for="">
+          Producto:
+          
+          <input  requiered class="" type="text" placeholder="Producto" name="nombre_Produc" id="nombre_Produc" required/>
+        </label>
+      </div>
+      <div class="contenedor__items contenedor__items--2">
+        <label>
+          Descripcion:
+          <input requiered class="" type="text" placeholder="Descripcion" name="desc_Produc" id="desc_Produc" />
+        </label>
+      </div>
+
+      <div class="contenedor__items">
+        <label>
+          Precio:
+          <input requiered class="" type="number" placeholder="$" name="precio" id="precio"/>
+        </label>
+      </div>
+      <div class="contenedor__items">
+        <label>
+          Categoria:
+          <select name="id_Categoria">
+            <option value="1">Accesorio</option>
+            <option value="2">Refacción</option>
+          </select>
+        </label>
+      </div>
+      <div class="contenedor__items">
+        <label>
+          Imagen:
+          <input requiered class="" type="text" placeholder="" name="url_Img" id="url_Img"/>
+        </label>
+      </div>
+      
+      
+      
+      <button class="button">Guardar</button>
+      <!-- <button class="button">Eliminar</button> -->
+    </div>
+  </form>
+  </body>
+
+  <script>
+    document.getElementById('btn_regreso').addEventListener('click',function(){
+      window.location.href = '/auth/utilidades_admin/vistacrud';
+    })
+  </script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+  <% if (typeof alert != "undefined")  { %>
+    <script>
+    Swal.fire({
+      title:'<%= alertTitle %>',
+      text:'<%= alertMessage %>',
+      icon:'<%= alertIcon %>',
+      showConfirmButton: <%= showConfirmButton %>,
+      timer: <%= timer %>
+    }).then(()=>{
+      window.location.href='<%= ruta %>'
+    })
+    </script>
+  <% } %>
+</html>

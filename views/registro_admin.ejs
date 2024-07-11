@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registro</title>
+    <link rel="stylesheet" href="/resources/css/registro.css"/>
+  </head>
+  <body>
+    <div class="contenedor">
+      <div class="centro">
+        <h2 style="margin-bottom: 25px;">Registro de usuario</h2>
+        <div id="registros">
+          <div class="registros_items">
+            <form action="/register" method="post">
+           <label for="">Nombre
+            <input type="text" class="input" name="nombreUsuario" id="nombreUsuario" required/>
+           </label>
+          </div>
+          <div class="registros_items">
+            <label for="">Apellido
+              <input type="text" class="input" name="apellidoUsuario" id="apellidoUsuario" required/>
+            </label>
+          </div>
+          <div>
+            <div class="registros_items">
+              <label for="">Usuario
+                <input type="text" class="input" name="usuario" id="usuario" required/>
+              </label>
+            </div>
+            <div class="registros_items">
+              <label for="">Contraseña 
+                <input type="password" name="contrasenia" id="contrasenia" class="input" required/>
+              </label>
+            </div>
+          </div>
+          <button type="submit" id="sign-in" class="button">Registrarse</button>
+        </form>
+        </div>
+        <div>
+          <p style="margin-top: 37px;">¿Ya tienes una cuenta? <a href="/login_admin">Iniciar sesión</a></p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
