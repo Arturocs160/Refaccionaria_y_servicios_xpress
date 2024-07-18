@@ -2,6 +2,8 @@
 const express = require('express');
 const app = express();
 
+const multer = require('multer');
+const path = require('path');
 // 2. Se setea urlencoded para capturar los datos del formulario
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
@@ -111,6 +113,17 @@ app.get('/auth/utilidades_admin/vistacrud_Servicios', (req, res) => {
     res.render('vistacrud_Servicios')
 })
 
+// Configuración de almacenamiento de Multer
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './uploads/'); 
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname)); 
+  }
+});
+const upload = multer({ storage: storage });
+
 // 10. Registrar usuarios
 app.post('/register', async(req,res)=>{
     const nombreUsuario = req.body.nombreUsuario;
@@ -165,74 +178,62 @@ app.post('/auth', async(req,res)=>{
 
 // Agregar un producto 
 
-app.post('/productos', (req, res) => {
-    const {nombre_Produc, desc_Produc, precio, id_Categoria, url_Img} = req.body;
-    connection.query(
-      'INSERT INTO productos SET  ?',
-        {nombre_Produc:nombre_Produc, desc_Produc:desc_Produc, precio:precio, id_Categoria:id_Categoria,url_Img:url_Img},
-      (err, result) => {
-        if(err){
-            console.log("Error " + err);
-        }
-        else{
-            res.render('editar_productos', {
-                alert: true,
-                alertTitle: "Registro producto",
-                alertMessage: "¡Registro exitoso!",
-                alertIcon:'success',
-                showConfirmButton: true,
-                timer: false,
-                ruta: '/auth/utilidades_admin/vistacrud/editar_productos'
-            });
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+app.use(express.urlencoded({ extended: true }));
+
+app.post('/productos', upload.single('imagen_producto'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).send('No se subió ningún archivo.');
+  }
+
+  const { nombre_Produc, desc_Produc, precio, id_Categoria } = req.body;
+  const url_Img = `/uploads/${req.file.filename}`; 
+
+  connection.query(
+    'INSERT INTO productos SET ?',
+    { nombre_Produc, desc_Produc, precio, id_Categoria, url_Img },
+    (err, result) => {
+      if (err) {
+        console.log("Error " + err);
+        res.status(500).json({ message: 'Error al agregar el producto' });
+      } else {
+        res.render('agregar_productos', {
+          alert: true,
+          alertTitle: "Registro producto",
+          alertMessage: "¡Registro exitoso!",
+          alertIcon: 'success',
+          showConfirmButton: true,
+          timer: false,
+          ruta: '/auth/utilidades_admin/vistacrud/agregar_productos'
+        });
       }
-    });
+    }
+  );
 });
 
 // Actualizar Producto
+app.put('/productos/:id', upload.single('imagen_producto'), (req, res) => {
+  const productId = req.params.id;
+  const { nombre_Produc, desc_Produc, precio, id_Categoria } = req.body;
+  const url_Img = req.file ? `/uploads/${req.file.filename}` : req.body.url_Img;
 
-app.post('/productos/modificarProducto', (req, res) => {
-  const data = req.body;
-  console.log('Datos recibidos:', data);
-  res.json(data); // Envía una respuesta con los datos recibidos
-});
-
-app.get('/api/productos/:id', (req, res) => {
-  const data = { id: req.params.id };
-  res.json(data);
-});
-
-app.put('/productos', (req, res) => {
-    const { id_Producto } = req.params;
-    if(error){
-        console.log("Error " + error);
-    }
-    else{
-        res.render('/editar_productos', {
-            alert: true,
-            alertTitle: "Registro usuario",
-            alertMessage: "¡Registro exitoso!",
-            alertIcon:'success',
-            showConfirmButton: true,
-            timer: false,
-            ruta: '/editar_productos'
-        });
-    }    connection.query(
-      'UPDATE productos SET nombre_Produc = ?, desc_Produc = ?, cantidad = ?, precio = ?, id_Categoria = ? WHERE id_Producto = ?',
-      [nombre_Produc, desc_Produc, precio, id_Categoria, id_Producto],
-      (err, result) => {
-        if (err) {
-          res.status(500).json({ error: 'Error al actualizar producto: ' + err.message });
-          return;
-        }
-        if (result.affectedRows === 0) {
-          res.status(404).json({ mensaje: 'Producto no encontrado' });
-          return;
-        }
-        res.json({ mensaje: 'Producto actualizado con éxito' });
+  connection.query(
+    'UPDATE productos SET nombre_Produc=?, desc_Produc=?, precio=?, id_Categoria=?, url_Img=? WHERE id_Producto=?',
+    [nombre_Produc, desc_Produc, precio, id_Categoria, url_Img, productId],
+    (err, result) => {
+      if (err) {
+        console.error("Error al actualizar el producto:", err);
+        res.status(500).json({ message: 'Error al actualizar el producto' });
+      } else {
+        res.json({ message: 'Producto actualizado con éxito' });
       }
-    );
-  });
-  
+    }
+  );
+});
+
+
   // Eliminar un producto
   app.delete('/productos/:id_Producto', (req, res) => {
     const { id_Producto } = req.params;
@@ -249,31 +250,94 @@ app.put('/productos', (req, res) => {
     });
   });
   
+  //Muestra todos los productos en el CRUD
+app.get('/auth/utilidades_admin/vistacrud/editar_productos/:id', (req, res) => {
+  const productoId = req.params.id;
+  const query = 'SELECT * FROM productos WHERE id_Producto = ?';
+
+  connection.query(query, [productoId], (error, results) => {
+    if (error) {
+      console.error('Error al obtener el producto:', error);
+      res.status(500).send('Error al obtener el producto');
+    } else {
+      res.render('editar_productos', { producto: results[0] });
+    }
+  });
+});
+
+ //Mostrar productos en el Front /productos
+
+ app.get('/api/productos', (req, res) => {
+  connection.query('SELECT * FROM productos', (err, results) => {
+    if (err) {
+      console.log("Error " + err);
+      res.status(500).json({ message: 'Error al obtener los productos' });
+    } else {
+      res.json(results);
+    }
+  });
+});
+
+
 
   //Agregar un servicio
-
-  app.post('/servicios', (req, res) => {
-    const {nombre_Servicio, desc_Servicio, precio, url_Img } = req.body;
+  app.post('/servicios', upload.single('imagen_servicio'), (req, res) => {
+    if (!req.file) {
+      return res.status(400).send('No se subió ningún archivo.');
+    }
+  
+    const { nombre_Servicio, desc_Servicio, precio } = req.body;
+    const url_Img = `/uploads/${req.file.filename}`; 
+  
     connection.query(
-      'INSERT INTO servicios SET  ?',
-        {nombre_Servicio:nombre_Servicio, desc_Servicio:desc_Servicio, precio:precio,url_Img:url_Img},
+      'INSERT INTO servicios SET ?',
+      { nombre_Servicio, desc_Servicio, precio, url_Img },
       (err, result) => {
-        if(err){
-            console.log("Error " + err);
+        if (err) {
+          console.log("Error " + err);
+          res.status(500).json({ message: 'Error al agregar el servicio' });
+        } else {
+          res.render('agregar_servicios', {
+            alert: true,
+            alertTitle: "Registro servicio",
+            alertMessage: "¡Registro exitoso!",
+            alertIcon: 'success',
+            showConfirmButton: true,
+            timer: false,
+            ruta: '/auth/utilidades_admin/vistacrud_Servicios/agregar_servicios'
+          });
         }
-        else{
-            res.render('editar_servicios', {
-                alert: true,
-                alertTitle: "Registro Servicio",
-                alertMessage: "¡Registro exitoso!",
-                alertIcon:'success',
-                showConfirmButton: true,
-                timer: false,
-                ruta: '/auth/utilidades_admin/vistacrud_Servicios/editar_servicios'
-            });
       }
-    });
-});
+    );
+  });
+ 
+  //Actualizar Servicio
+  app.put('/api/servicios/:id', upload.single('imagen_servicio'), (req, res) => {
+    const { id } = req.params;
+    const { nombre_Servicio, desc_Servicio, precio } = req.body;
+    let url_Img;
+  
+    if (req.file) {
+      url_Img = `/uploads/${req.file.filename}`;
+    } else {
+      url_Img = req.body.url_Img; 
+    }
+  
+    const servicioActualizado = { nombre_Servicio, desc_Servicio, precio, url_Img };
+  
+    connection.query(
+      'UPDATE servicios SET ? WHERE id_Servicio = ?',
+      [servicioActualizado, id],
+      (err, result) => {
+        if (err) {
+          console.error('Error al actualizar el servicio:', err);
+          res.status(500).json({ message: 'Error al actualizar el servicio' });
+        } else {
+          res.json({ message: 'Servicio actualizado con éxito' });
+        }
+      }
+    );
+  });
 
 //Eliminar un Servicio
 
@@ -292,16 +356,6 @@ app.delete('/servicios/:id_Servicio', (req, res) => {
     });
   });
   
-
-
-  //Mostrar productos en el Front /productos
-
-  app.get('/api/productos', (req, res) => {
-    connection.query('SELECT id_Producto,nombre_Produc, desc_Produc, precio, id_Categoria FROM productos', (error, results, fields) => {
-      if (error) throw error;
-      res.json(results);
-    });
-  });
   
   //Mostrar servicios en el Front /sevicios
 

@@ -30,14 +30,7 @@
         <h1>Productos</h1>
     </div>
     <div class="container">
-        <!-- <div class="decate">
-            <div class="cate">
-             <h3>Categorias</h3>
-             <h5>categoria1</h5>
-             <h5>categoria1</h5>
-             <h5>categoria1</h5>
-            </div>
-        </div> -->
+      
             <div class="izproduc">
                 <div class="cards-container" id="productos-lista"></div>
                 
@@ -58,22 +51,23 @@
                 </div>
             </footer>
             <script>
-            fetch('/api/productos')
-            .then(response => response.json())
-            .then(productos => {
-                const productosLista = document.getElementById('productos-lista');
-                productos.forEach(producto => {
-                    const productoCard = document.createElement('div');
-                    productoCard.className = 'card';
-                    productoCard.innerHTML = `
+                fetch('/api/productos')
+                    .then(response => response.json())
+                    .then(productos => {
+                    const productosLista = document.getElementById('productos-lista');
+                    productos.forEach(producto => {
+                        const productoCard = document.createElement('div');
+                        productoCard.className = 'card';
+                        productoCard.innerHTML = `
                         <h2>${producto.nombre_Produc}</h2>
                         <p>Descripción: ${producto.desc_Produc}</p>
                         <p>Precio: $${producto.precio}</p>
-                    `;
-                    productosLista.appendChild(productoCard);
-                });
-            })
-            .catch(error => console.error('Error fetching productos:', error));
+                        <img src="${producto.url_Img}" alt="Imagen del producto">
+                        `;
+                        productosLista.appendChild(productoCard);
+                    });
+                    })
+        .catch(error => console.error('Error fetching productos:', error));
               </script>
 </body>
 </html>

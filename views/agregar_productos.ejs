@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar productos</title>
+    <title>Agregar productos</title>
     <link rel="stylesheet" href="/resources/css/styles.css" />
   </head>
   <body>
@@ -14,10 +14,9 @@
       </div>
       <div><img src="/resources/assets/img1.png" /></div>
       <div class="contenedor__items">
-        <form action="/productos" method="post" >
+        <form action="/productos" method="post" enctype="multipart/form-data">
         <label for="">
           Producto:
-          
           <input  requiered class="" type="text" placeholder="Producto" name="nombre_Produc" id="nombre_Produc" required/>
         </label>
       </div>
@@ -27,7 +26,6 @@
           <input requiered class="" type="text" placeholder="Descripcion" name="desc_Produc" id="desc_Produc" />
         </label>
       </div>
-
       <div class="contenedor__items">
         <label>
           Precio:
@@ -46,14 +44,11 @@
       <div class="contenedor__items">
         <label>
           Imagen:
-          <input requiered class="" type="text" placeholder="" name="url_Img" id="url_Img"/>
+          <input required type="file" name="imagen_producto" id="imagen_producto" accept="image/*" >
         </label>
       </div>
-      
-      
-      
       <button class="button">Guardar</button>
-      <!-- <button class="button">Eliminar</button> -->
+     
     </div>
   </form>
   </body>

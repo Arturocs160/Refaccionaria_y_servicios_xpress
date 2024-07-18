@@ -1,84 +1,101 @@
+<!-- formulario_editar_producto.html -->
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar productos</title>
-    <link rel="stylesheet" href="/resources/css/styles.css" />
-  </head>
-  <body>
-    <div class="contenedor">
-      <div class="contenedor__img">
-        <img style="background-color: transparent; border-style: none; cursor: pointer;" src="/resources/assets/cerrar.png" id="btn_regreso" class="contenedor__img--cierre"
-        />
-      </div>
-      <div><img src="/resources/assets/img1.png" /></div>
-      <div class="contenedor__items">
-        <form action="/productos" method="post" >
-        <label for="">
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Editar Producto</title>
+  <link rel="stylesheet" href="/resources/css/styles.css">
+</head>
+<body>
+  <div class="contenedor">
+    <div class="contenedor__img">
+      <img style="background-color: transparent; border-style: none; cursor: pointer;" src="/resources/assets/cerrar.png" id="btn_regreso" class="contenedor__img--cierre">
+    </div>
+    <div><img src="/resources/assets/img1.png"></div>
+    <div class="contenedor__items">
+      <form id="editarProductoForm">
+        <input type="hidden" id="idProducto" name="id_Producto">
+        <label for="nombre_Produc">
           Producto:
-          
-          <input  requiered class="" type="text" placeholder="Producto" name="nombre_Produc" id="nombre_Produc" required/>
+          <input class="" type="text" placeholder="Producto" name="nombre_Produc" id="nombre_Produc" required>
         </label>
-      </div>
-      <div class="contenedor__items contenedor__items--2">
-        <label>
+    </div>
+    <div class="contenedor__items contenedor__items--2">
+        <label for="desc_Produc">
           Descripcion:
-          <input requiered class="" type="text" placeholder="Descripcion" name="desc_Produc" id="desc_Produc" />
+          <input class="" type="text" placeholder="Descripcion" name="desc_Produc" id="desc_Produc">
         </label>
-      </div>
-
-      <div class="contenedor__items">
-        <label>
+    </div>
+    <div class="contenedor__items">
+        <label for="precio">
           Precio:
-          <input requiered class="" type="number" placeholder="$" name="precio" id="precio"/>
+          <input class="" type="number" placeholder="$" name="precio" id="precio" required>
         </label>
-      </div>
-      <div class="contenedor__items">
-        <label>
+    </div>
+    <div class="contenedor__items">
+        <label for="id_Categoria">
           Categoria:
-          <select name="id_Categoria">
+          <select name="id_Categoria" id="id_Categoria">
             <option value="1">Accesorio</option>
             <option value="2">Refacción</option>
           </select>
         </label>
-      </div>
-      <div class="contenedor__items">
+    </div>
+    <div class="contenedor__items">
         <label>
           Imagen:
-          <input requiered class="" type="text" placeholder="" name="url_Img" id="url_Img"/>
+          <input required type="file" name="imagen_producto" id="imagen_producto" accept="image/*" >
         </label>
-      </div>
-      
-      
-      
-      <button class="button">Guardar</button>
-      <!-- <button class="button">Eliminar</button> -->
     </div>
+        <div>
+          <button type="submit" class="button">Guardar</button>
+        </div>
+      
+    
   </form>
-  </body>
+   
+  </div>
 
   <script>
-    document.getElementById('btn_regreso').addEventListener('click',function(){
+    document.getElementById('btn_regreso').addEventListener('click', function() {
       window.location.href = '/auth/utilidades_admin/vistacrud';
-    })
+    });
 
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const productId = urlParams.get('id');
 
+    fetch(`/api/productos/${productId}`)
+      .then(response => response.json())
+      .then(producto => {
+        document.getElementById('idProducto').value = producto.id_Producto;
+        document.getElementById('nombre_Produc').value = producto.nombre_Produc;
+        document.getElementById('desc_Produc').value = producto.desc_Produc;
+        document.getElementById('precio').value = producto.precio;
+        document.getElementById('id_Categoria').value = producto.id_Categoria;
+        document.getElementById('url_Img').value = producto.url_Img;
+      })
+      .catch(error => console.error('Error:', error));
+
+    document.getElementById('editarProductoForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const formData = new FormData(this);
+
+      fetch(`/productos/${productId}`, {
+        method: 'PUT',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.message === 'Producto actualizado con éxito') {
+          alert('Producto actualizado con éxito');
+          window.location.href = '/auth/utilidades_admin/vistacrud';
+        } else {
+          alert('Error al actualizar producto');
+        }
+      })
+      .catch(error => console.error('Error:', error));
+    });
   </script>
-  
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
-  <% if (typeof alert != "undefined")  { %>
-    <script>
-    Swal.fire({
-      title:'<%= alertTitle %>',
-      text:'<%= alertMessage %>',
-      icon:'<%= alertIcon %>',
-      showConfirmButton: <%= showConfirmButton %>,
-      timer: <%= timer %>
-    }).then(()=>{
-      window.location.href='<%= ruta %>'
-    })
-    </script>
-  <% } %>
+</body>
 </html>

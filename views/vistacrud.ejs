@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Buscador</title>
+  <title>Administrar Productos</title>
   <link rel="stylesheet" href="/resources/css/buscador.css" />
 </head>
 <body>
@@ -18,12 +18,10 @@
       </div>
       <div id="main">
         <h1 style="font-size: 50px">Administrar Productos</h1>
-       <!-- <div class="buscador">
-          <input type="text" />
-          <img src="/resources/assets/lupa.png" alt="" />
-          <button>Buscar</button>
-        </div>-->
-        <div class="tabla" >
+        <div class="buscador">
+          <input type="text" id="buscador" placeholder="Buscar productos..." oninput="buscarProducto()">
+        </div>
+        <div class="tabla">
           <table>
             <thead>
               <tr class="Encabezados">
@@ -36,7 +34,6 @@
               </tr>
             </thead>
             <tbody id="productos-tbody">
-            
             </tbody>
           </table>
         </div>
@@ -52,79 +49,75 @@
       window.location.href = '/auth/utilidades_admin/vistacrud/agregar_productos'; 
     });
 
-    function irEditarProducto(){
-      window.location.href = '/auth/utilidades_admin/vistacrud/editar_productos';
-    };
+    function irEditarProducto(id) {
+      window.location.href = `/auth/utilidades_admin/vistacrud/editar_productos?id=${id}`;
+    }
+
+    let productos = [];
+
+    function buscarProducto() {
+      const buscador = document.getElementById('buscador').value.toLowerCase();
+      const productosFiltrados = productos.filter(producto => producto.nombre_Produc.toLowerCase().includes(buscador));
+      mostrarProductos(productosFiltrados);
+    }
+
+    function mostrarProductos(productos) {
+      const tbody = document.getElementById('productos-tbody');
+      tbody.innerHTML = ''; 
+      productos.forEach(producto => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="relleno">${producto.id_Producto}</td>
+          <td class="relleno">${producto.nombre_Produc}</td>
+          <td class="relleno">${producto.desc_Produc}</td>
+          <td class="relleno">${producto.precio}</td>
+          <td class="relleno">${producto.id_Categoria}</td>
+          <td class="relleno" style="display:flex; margin:0px;">
+            <button style="background-color: transparent; border-style: none; cursor: pointer;" class="btn_modificar" data-id="${producto.id_Producto}">
+              <img class="anadir" src="/resources/assets/editar.png" alt="">
+            </button>
+            <button style="background-color: transparent; border-style: none; cursor: pointer;" class="btn_eliminar" data-id="${producto.id_Producto}">
+              <img class="anadir" src="/resources/assets/eliminar.png" alt="">
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.querySelectorAll('.btn_modificar').forEach(boton => {
+        boton.addEventListener('click', function() {
+          const idProducto = this.getAttribute('data-id');
+          irEditarProducto(idProducto);
+        });
+      });
+
+      document.querySelectorAll('.btn_eliminar').forEach(boton => {
+        boton.addEventListener('click', function() {
+          const idProducto = this.getAttribute('data-id');
+          fetch(`/productos/${idProducto}`, {
+            method: 'DELETE'
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.mensaje === 'Producto eliminado con éxito') {
+              alert('Producto eliminado con éxito');
+              location.reload(); 
+            } else {
+              alert('Error al eliminar producto');
+            }
+          })
+          .catch(error => console.error('Error:', error));
+        });
+      });
+    }
 
     fetch('/api/productos')
       .then(response => response.json())
       .then(data => {
-        const tbody = document.getElementById('productos-tbody');
-        tbody.innerHTML = ''; 
-        data.forEach(producto => {
-          const tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td class="relleno">${producto.id_Producto}</td>
-            <td class="relleno">${producto.nombre_Produc}</td>
-            <td class="relleno">${producto.desc_Produc}</td>
-            <td class="relleno">${producto.precio}</td>
-            <td class="relleno">${producto.id_Categoria}</td>
-            <td class="relleno" style="display:flex; margin:0px;">
-              <button style="background-color: transparent; border-style: none; cursor: pointer; class="btn_modificar"; onclick="irEditarProducto()"; id="btn_modificar"">
-                <img class="anadir" src="/resources/assets/editar.png" alt="">
-              </button>
-              <button style="background-color: transparent; border-style: none; cursor: pointer;" class="btn_eliminar" data-id="${producto.id_Producto}">
-                <img class="anadir" src="/resources/assets/eliminar.png" alt="">
-              </button>
-            </td>
-          `;
-          tbody.appendChild(tr);
-        });
-
-        
-        const botonesEliminar = document.querySelectorAll('.btn_eliminar');
-        botonesEliminar.forEach(boton => {
-          boton.addEventListener('click', function() {
-            const idProducto = this.getAttribute('data-id');
-            fetch(`/productos/${idProducto}`, {
-              method: 'DELETE'
-            })
-            .then(response => response.json())
-            .then(data => {
-              if (data.mensaje === 'Producto eliminado con éxito') {
-                alert('Producto eliminado con éxito');
-                location.reload(); 
-              } else {
-                alert('Error al eliminar producto');
-              }
-            })
-            .catch(error => console.error('Error:', error));
-          });
-        });
+        productos = data;
+        mostrarProductos(productos);
       })
       .catch(error => console.error('Error al obtener los productos:', error));
-
-
-      document.getElementById('btn_modificar').addEventListener('click', function() {
-            const idProducto = this.getAttribute('data-id');
-            
-            fetch('/productos/modificarProducto', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ id_Producto: idProducto, nombre_Produc: nombre_Produc, desc_Produc:desc_Produc, precio:precio, id_Categoria:id_Categoria }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Éxito:', data);
-                // Redirigir a la página de recepción con el ID
-                window.location.href = `/auth/utilidades_admin/vistacrud/editar_productos/:id`;
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-        });
   </script>
 </body>
 </html>

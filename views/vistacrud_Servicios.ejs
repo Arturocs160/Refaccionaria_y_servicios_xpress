@@ -18,6 +18,9 @@
       </div>
       <div id="main">
         <h1 style="font-size: 50px">Administrar Servicios</h1>
+        <div class="buscador">
+          <input type="text" id="buscador" placeholder="Buscar servicios...">
+        </div>
         <div class="tabla">
           <table>
             <thead>
@@ -30,7 +33,6 @@
               </tr>
             </thead>
             <tbody id="servicios-tbody">
-            
             </tbody>
           </table>
         </div>
@@ -46,16 +48,15 @@
       window.location.href = '/auth/utilidades_admin/vistacrud_Servicios/agregar_servicios'; 
     });
 
-    function irEditarServicio(){
-      window.location.href = '/auth/utilidades_admin/vistacrud_Servicios/editar_servicios';
+    function irEditarServicio(idServicio){
+      window.location.href = `/auth/utilidades_admin/vistacrud_Servicios/editar_servicios?id=${idServicio}`;
     };
-
 
     fetch('/api/servicios')
       .then(response => response.json())
       .then(data => {
         const tbody = document.getElementById('servicios-tbody');
-        tbody.innerHTML = ''; // Limpiar cualquier contenido previo
+        tbody.innerHTML = ''; 
         data.forEach(servicio => {
           const tr = document.createElement('tr');
           tr.innerHTML = `
@@ -65,7 +66,7 @@
             <td class="relleno">${servicio.precio}</td>
             
             <td class="relleno" style="display:flex; margin:0px;">
-              <button style="background-color: transparent; border-style: none; cursor: pointer; class="btn_modificar"; onclick="irEditarServicio()"">
+              <button style="background-color: transparent; border-style: none; cursor: pointer;" class="btn_modificar" data-id="${servicio.id_Servicio}">
                 <img class="anadir" src="/resources/assets/editar.png" alt="">
               </button>
               <button style="background-color: transparent; border-style: none; cursor: pointer;" class="btn_eliminar" data-id="${servicio.id_Servicio}">
@@ -76,8 +77,14 @@
           tbody.appendChild(tr);
         });
 
-        const botonesEliminar = document.querySelectorAll('.btn_eliminar');
-        botonesEliminar.forEach(boton => {
+        document.querySelectorAll('.btn_modificar').forEach(boton => {
+          boton.addEventListener('click', function() {
+            const idServicio = this.getAttribute('data-id');
+            irEditarServicio(idServicio);
+          });
+        });
+
+        document.querySelectorAll('.btn_eliminar').forEach(boton => {
           boton.addEventListener('click', function() {
             const id_Servicio = this.getAttribute('data-id');
             fetch(`/servicios/${id_Servicio}`, {
@@ -93,6 +100,35 @@
               }
             })
             .catch(error => console.error('Error:', error));
+          });
+        });
+
+        // Agregar funcionalidad de búsqueda
+        const buscador = document.getElementById('buscador');
+        buscador.addEventListener('input', function() {
+          const searchText = this.value.toLowerCase();
+          const filteredData = data.filter(servicio => 
+            servicio.nombre_Servicio.toLowerCase().includes(searchText)
+          );
+          tbody.innerHTML = '';
+          filteredData.forEach(servicio => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td class="relleno">${servicio.id_Servicio}</td>
+              <td class="relleno">${servicio.nombre_Servicio}</td>
+              <td class="relleno">${servicio.desc_Servicio}</td>
+              <td class="relleno">${servicio.precio}</td>
+              
+              <td class="relleno" style="display:flex; margin:0px;">
+                <button style="background-color: transparent; border-style: none; cursor: pointer;" class="btn_modificar" data-id="${servicio.id_Servicio}">
+                  <img class="anadir" src="/resources/assets/editar.png" alt="">
+                </button>
+                <button style="background-color: transparent; border-style: none; cursor: pointer;" class="btn_eliminar" data-id="${servicio.id_Servicio}">
+                  <img class="anadir" src="/resources/assets/eliminar.png" alt="">
+                </button>
+              </td>
+            `;
+            tbody.appendChild(tr);
           });
         });
       })

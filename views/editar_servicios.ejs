@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edicion de servicios</title>
+    <title>Edición de servicios</title>
     <link rel="stylesheet" href="/resources/css/styles.css" />
   </head>
   <body>
@@ -15,49 +15,73 @@
       </div>
       <div><img src="/resources/assets/img1.png" /></div>
       <div class="contenedor__items">
-        <form action="/servicios" method="post" >
-        <label for="">
-          Servicio:
-          <input required class="" type="text" placeholder="Servicio" name="nombre_Servicio"  id="nombre_Servicio"/>
-        </label>
+        <form id="editarServicioForm" enctype="multipart/form-data">
+          <input type="hidden" id="idServicio" name="id_Servicio">
+          <label for="nombre_Servicio">
+            Servicio:
+            <input required class="" type="text" placeholder="Servicio" name="nombre_Servicio" id="nombre_Servicio"/>
+          </label>
       </div>
       <div class="contenedor__items contenedor__items--2">
-        <label>
-          Descripcion:
-          <input class="" type="text" placeholder="Descripcion" name="desc_Servicio" id="desc_Servicio" />
+        <label for="desc_Servicio">
+          Descripción:
+          <input class="" type="text" placeholder="Descripción" name="desc_Servicio" id="desc_Servicio" />
         </label>
       </div>
-
       <div class="contenedor__items">
-        <label>
+        <label for="precio">
           Precio:
           <input class="" type="number" placeholder="$" name="precio" id="precio"/>
         </label>
       </div>
-      <button class="button">Guardar</button>
+      <div class="contenedor__items">
+        <label for="imagen_servicio">
+          Imagen:
+          <input type="file" name="imagen_servicio" id="imagen_servicio" accept="image/*">
+        </label>
+      </div>
+      <button type="submit" class="button">Guardar</button>
+        </form>
     </div>
-  </form>
-  </body>
-
-  <script>
-    document.getElementById('btn_regreso').addEventListener('click',function(){
-      window.location.href = '/auth/utilidades_admin/vistacrud_Servicios';
-    })
-  </script>
   
-  
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
-  <% if (typeof alert != "undefined")  { %>
     <script>
-    Swal.fire({
-      title:'<%= alertTitle %>',
-      text:'<%= alertMessage %>',
-      icon:'<%= alertIcon %>',
-      showConfirmButton: <%= showConfirmButton %>,
-      timer: <%= timer %>
-    }).then(()=>{
-      window.location.href='<%= ruta %>'
-    })
+      document.getElementById('btn_regreso').addEventListener('click',function(){
+        window.location.href = '/auth/utilidades_admin/vistacrud_Servicios';
+      });
+
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      const servicioId = urlParams.get('id');
+
+      fetch(`/api/servicios/${servicioId}`)
+        .then(response => response.json())
+        .then(servicio => {
+          document.getElementById('idServicio').value = servicio.id_Servicio;
+          document.getElementById('nombre_Servicio').value = servicio.nombre_Servicio;
+          document.getElementById('desc_Servicio').value = servicio.desc_Servicio;
+          document.getElementById('precio').value = servicio.precio;
+        })
+        .catch(error => console.error('Error:', error));
+
+      document.getElementById('editarServicioForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const formData = new FormData(this);
+
+        fetch(`/api/servicios/${servicioId}`, {
+          method: 'PUT',
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.message === 'Servicio actualizado con éxito') {
+            alert('Servicio actualizado con éxito');
+            window.location.href = '/auth/utilidades_admin/vistacrud_Servicios';
+          } else {
+            alert('Error al actualizar servicio');
+          }
+        })
+        .catch(error => console.error('Error:', error));
+      });
     </script>
-  <% } %>
+  </body>
+</html>
