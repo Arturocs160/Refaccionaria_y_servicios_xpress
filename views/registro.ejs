@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/resources/css/global.css">
     <link rel="stylesheet" href="/resources/css/cita.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Registro</title>
 </head>
 <body>
@@ -14,17 +15,17 @@
         <label for="check" class="mostrar-menu">
             &#8801
         </label> 
-         <nav class="menu">
+        <nav class="menu">
             <a href="/">Inicio</a>
             <a href="/servicios">Servicios</a>
             <a href="/cita">Cita</a>   
             <a href="/productos">Productos</a>
             <a href="/nosotros">Nosotros</a>
             <a href="/contacto">Contacto</a>
-        <label for="check" class="esconder-menu">
-            &#215
-        </label>
-    </nav>
+            <label for="check" class="esconder-menu">
+                &#215
+            </label>
+        </nav>
     </header>
 
     <div class="nombresec">
@@ -32,38 +33,123 @@
     </div>
     <div class="container">
         <div class="izquierda-registro">
-            <div> <h3>Nombre: </h3><h3>ejemplo</h3></div>
-            <div> <h3>Correo electronico: </h3><h3>ejemplo</h3></div>
-            <div> <h3>Fecha: </h3><h3>ejemplo</h3></div>
-            <div> <h3>Hora: </h3><h3>ejemplo</h3></div>
+            <div><h3>Nombre: </h3><h3 id="nombre"></h3></div>
+            <div><h3>Correo electrónico: </h3><h3 id="correo"></h3></div>
+            <div><h3>Fecha: </h3><h3 id="fecha"></h3></div>
+            <div><h3>Hora: </h3><h3 id="hora"></h3></div>
         </div>
         <div class="derecha-registro">
-            <div><h3>ID: </h3><h3>ejemplo</h3></div>
-            <div> <h3>Servicio: </h3><h3>ejemplo</h3></div>
-            <div><button id="rojo"><a href="#">Cancelar cita</a></button></div>
-
+            <div><h3>Numero de la cita: </h3><h3 id="num_Cita"></h3></div>
+            <div><h3>Servicio: </h3><h3 id="servicio"></h3></div>
+            <div><button id="rojo"><a>Cancelar cita</a></button></div>
         </div>
-
     </div>
 
     <footer>
         <div class="contacto">
             <p>Contacto </p>
-            <p>Telefono</p>
-            <p>correo electronico</p>
+            <p>Teléfono</p>
+            <p>Correo electrónico</p>
         </div>
         <div class="redes">
-            <p>Siguenos: </p>
+            <p>Síguenos: </p>
             <img src="/resources/assets/facebook.png" alt="">
             <img src="/resources/assets/instagram.png" alt="">
             <img src="/resources/assets/twitter.png" alt="">
             <img src="/resources/assets/youtube.png" alt="">
         </div>
     </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Obtener la información de la cita desde sessionStorage
+            const cita = JSON.parse(sessionStorage.getItem('infoCita'));
 
-        
+            if (cita) {
+                document.getElementById('nombre').textContent = `${cita.nombre_Cliente} ${cita.apellido1} ${cita.apellido2}`;
+                document.getElementById('correo').textContent = cita.correo;
 
+                // Convertir la fecha en formato legible
+                const fecha = new Date(cita.fecha);
+                const opciones = { day: '2-digit', month: 'long', year: 'numeric' };
+                const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
+                document.getElementById('fecha').textContent = fechaFormateada;
+                document.getElementById('hora').textContent = cita.hora;
+                document.getElementById('num_Cita').textContent = cita.num_Cita;
+
+                // Primero, obtenemos la lista de todos los servicios
+                fetch('/api/servicios')
+                    .then(response => response.json())
+                    .then(servicios => {
+                        // Buscar el servicio correspondiente y mostrar su nombre
+                        const servicioSeleccionado = servicios.find(servicio => servicio.id_Servicio === cita.id_Servicio);
+                        if (servicioSeleccionado) {
+                            document.getElementById('servicio').textContent = servicioSeleccionado.nombre_Servicio;
+                        } else {
+                            document.getElementById('servicio').textContent = 'Servicio no encontrado';
+                        }
+                    })
+                    .catch(error => console.error('Error al obtener los servicios:', error));
+            } else {
+                document.getElementById('citaContainer').textContent = 'No hay detalles de la cita disponibles.';
+            }
+        });
+
+
+
+    document.getElementById('rojo').addEventListener('click', (event) => {
+    event.preventDefault(); // Prevenir el comportamiento predeterminado del enlace
+
+    const cita = JSON.parse(sessionStorage.getItem('infoCita'));
+
+    if (cita) {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "¡No podrás revertir esto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, cancelar cita',
+            cancelButtonText: 'No, mantener cita'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`/api/cancelar-cita/${cita.num_Cita}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        Swal.fire(
+                            'Cancelada',
+                            'Tu cita ha sido cancelada.',
+                            'success'
+                        ).then(() => {
+                            // Borrar los datos de sessionStorage
+                            sessionStorage.removeItem('infoCita');
+                            // Recargar la página
+                            window.location.reload();
+                        });
+                    } else {
+                        Swal.fire(
+                            'Error',
+                            'Hubo un problema al cancelar la cita.',
+                            'error'
+                        );
+                    }
+                })
+                .catch(error => console.error('Error al cancelar la cita:', error));
+            }
+        });
+    } else {
+        Swal.fire(
+            'Error',
+            'No hay detalles de la cita disponibles.',
+            'error'
+        );
+    }
+    });
+    </script>
 </body>
 </html>
-
-

@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/resources/css/global.css">
     <link rel="stylesheet" href="/resources/css/cita.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/pikaday/css/pikaday.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <title>Agendar cita</title>
 </head>
-<body>
+<body style="overflow-x: hidden;">
     <header>
         <img src="/resources/assets/logo.png" alt="logo Refaccionaría y servicios Xpress">
         <input type="checkbox" id="check">
@@ -29,49 +31,53 @@
     <div class="nombresec">
         <h1>Agendar cita</h1>
     </div>
+    <form id="formularioCitas" action="/agendarCita" method="post">
     <div class="container">
         <div class="campos">
             <div class="input-agendar">
                 <h4>Nombre</h4>
-               <input type="text">
+               <input name="nombre_Cliente" id="nombre_Cliente" type="text" required>
             </div>
             <div class="input-agendar">
                 <h4>Apellido Paterno</h4>
-               <input type="text">
+               <input name="apellido1" type="text" id="apellido1" required>
             </div>
             <div class="input-agendar">
                 <h4>Apellido Materno</h4>
-               <input type="text">
+               <input name="apellido2" id="apellido2" type="text">
             </div>
         </div>
         </div>
             <div class="campos">
                 <div class="input-agendar">
                     <h4>Correo electronico</h4>
-                   <input type="email">
+                   <input name="correo" id="correo" type="email" required>
                 </div>
                 <div class="input-agendar">
                     <h4>Telefono</h4>
-                   <input type="text">
+                   <input name="telefono" id="telefono" type="text" required>
                 </div>
         </div>
         <div class="campos">
             <div class="input-agendar">
                 <h4>Servicio</h4>
-               <input type="email">
+                <select name="id_Servicio" id="servicios-lista" required >
+                </select>
             </div>
             <div class="input-agendar">
                 <h4>Fecha</h4>
-               <input type="date">
+               <input autocomplete="off" name="fecha" type="text" id="fechas" required>
+               <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
             </div>
             <div class="input-agendar">
                 <h4>Hora</h4>
-               <input type="time">
+               <select name="hora" id="horas"></select>
             </div>
     </div>
     <div class="boton">
-        <button id="rojo"><a href="#">Agendar</a></button>
+        <button type="submit" id="rojo"><a>Agendar</a></button>
     </div>
+</form>
 
 
 <footer>
@@ -88,6 +94,123 @@
         <img src="/resources/assets/youtube.png" alt="">
     </div>
 </footer>
-
 </body>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        inicializarPikaday();
+    });
+
+    function inicializarPikaday() {
+        var picker = new Pikaday({
+            field: document.getElementById('fechas'),
+            format: 'YYYY-MM-DD',
+            minDate: new Date(), // Establece la fecha mínima como la fecha actual
+            toString(date, format) {
+                // you should do formatting based on the passed format,
+                // but we will just return 'D/M/YYYY' for simplicity
+                const day = date.getDate();
+                const month = date.getMonth() + 1;
+                const year = date.getFullYear();
+                return `${year}/${month}/${day}`;
+            },
+            disableDayFn: function(date) {
+                // Deshabilita todos los domingos
+                return date.getDay() === 0;
+            },
+            onSelect: function(date) {
+                const formattedDate = date.toISOString().split('T')[0];
+                fetch(`/api/citas/${formattedDate}`)
+                    .then(response => response.json())
+                    .then(reservedTimes => {
+                        actualizarHoras(reservedTimes);
+                    });
+            }
+        });
+    }
+
+    function actualizarHoras(reservedTimes) {
+        const timepicker = document.getElementById('horas');
+        timepicker.innerHTML = ''; // Limpiar las opciones anteriores
+
+        const allTimes = ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30',
+            '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00'
+        ];
+
+        allTimes.forEach(time => {
+            const option = document.createElement('option');
+            option.value = time;
+            option.text = time;
+            if (reservedTimes.includes(time)) {
+                option.disabled = true;
+            }
+            timepicker.add(option);
+        });
+}
+
+
+    fetch('/api/servicios')
+        .then(response => response.json())
+        .then(servicios => {
+            const serviciosLista = document.getElementById('servicios-lista');
+            servicios.forEach(servicios => {
+                const serviciosOpcion = document.createElement('option');
+                serviciosOpcion.innerHTML = 
+                    serviciosOpcion.value = servicios.id_Servicio;
+                    serviciosOpcion.textContent = servicios.nombre_Servicio;
+                    serviciosLista.appendChild(serviciosOpcion);
+               });
+           })
+        .catch(error => console.error('Error fetching productos:', error));
+
+
+    
+
+    document.getElementById('formularioCitas').addEventListener('submit', function(event) {
+      event.preventDefault(); // Evitar el envío del formulario por defecto
+
+      const data = {
+        nombre_Cliente: document.getElementById('nombre_Cliente').value,
+        apellido1: document.getElementById('apellido1').value,
+        apellido2: document.getElementById('apellido2').value,
+        correo: document.getElementById('correo').value,
+        telefono: document.getElementById('telefono').value,
+        id_Servicio: document.getElementById('servicios-lista').value,
+        fecha: document.getElementById('fechas').value,
+        hora: document.getElementById('horas').value
+      };
+
+      fetch('/agendarCita', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => response.json())
+      .then(result => {
+        Swal.fire({
+          title: 'Registro Exitoso',
+          text: `El número con el que puedes consultar tu cita es: ${result.id}`,
+          icon: 'success',
+          confirmButtonText: 'OK'
+        }).then(()=>{
+            window.location.href ="/cita/agendar";
+        });
+      })
+      .catch(error => {
+        Swal.fire({
+          title: 'Error',
+          text: 'Hubo un problema con el registro',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+        console.error('Error:', error);
+      });
+    });
+</script>
+
+
+
 </html>

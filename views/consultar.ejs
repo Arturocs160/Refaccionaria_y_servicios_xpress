@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/resources/css/cita.css">
     <title>Consultar </title>
 </head>
-<body>
+<body style="overflow-x: hidden;">
     <header>
         <img src="/resources/assets/logo.png" alt="logo Refaccionaría y servicios Xpress">
         <input type="checkbox" id="check">
@@ -26,25 +26,26 @@
         </label>
     </nav>
     </header>
-    <div class="nombresec">
+    <div id="containerConsultar" class="nombresec">
         <h1>Consulta o cancelación</h1>
     </div>
+    <form id="formConsultar" action="/consultarInformacionCitas" method="get">
     <div class="campos">
         <div class="marco">
             <div class="input-consultar">
                 <h4>Id</h4>
-               <input type="text">
+               <input name="num_Cita" id="num_Cita" type="text">
             </div>
             <div class="input-consultar">
                 <h4>Correo electronico</h4>
-               <input type="email">
+               <input name="correo" id="correo" type="email">
             </div>
-            
                 <div class="boton">
-                    <button id="rojo"><a href="/cita/consultar/registro">Consultar</a></button>
+                    <button id="rojo"><a>Consultar</a></button>
                 </div>
           </div>
-        </div>
+    </form>
+    </div>
 
           <footer>
             <div class="contacto">
@@ -61,5 +62,35 @@
             </div>
         </footer>
 </body>
+
+<script>
+    document.getElementById('formConsultar').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const num_Cita = document.getElementById('num_Cita').value;
+        const correo = document.getElementById('correo').value;
+
+        const url = `/consultarInformacionCitas?num_Cita=${encodeURIComponent(num_Cita)}&correo=${encodeURIComponent(correo)}`;
+        console.log(url); // Verifica que la URL se genere correctamente
+
+
+        fetch(url)
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Cita no encontrada');
+                }
+            })
+            .then(data => {
+                // Almacenar la información de la cita en sessionStorage
+                sessionStorage.setItem('infoCita', JSON.stringify(data));
+                // Redirigir a la página de detalles de la cita
+                window.location.href = '/cita/consultar/registro';
+            })
+            .catch(error => {
+                document.getElementById('containerConsultar').textContent = error.message;
+            });
+    });
+</script>
 </html>
 
