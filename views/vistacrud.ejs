@@ -42,15 +42,15 @@
   </div>
   <script>
     document.getElementById('btn_regresar').addEventListener('click', function() {
-      window.location.href = '/auth/utilidades_admin/';
+      window.location.href = '/utilidades_admin/';
     });
 
     document.getElementById('btn_agregar').addEventListener('click', function() {
-      window.location.href = '/auth/utilidades_admin/vistacrud/agregar_productos'; 
+      window.location.href = '/utilidades_admin/vistacrud/agregar_productos'; 
     });
 
     function irEditarProducto(id) {
-      window.location.href = `/auth/utilidades_admin/vistacrud/editar_productos?id=${id}`;
+      window.location.href = `/utilidades_admin/vistacrud/editar_productos?id=${id}`;
     }
 
     let productos = [];

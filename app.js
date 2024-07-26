@@ -30,6 +30,21 @@ app.use(session({
     saveUninitialized: true
 }));
 
+// Crea un middleware para verificar si el usuario ha iniciado sesión.
+function checkAuth(req, res, next) {
+  if (req.session.user) {
+    next();
+  } else {
+    res.redirect('/login_admin');
+  }
+}
+
+// Middleware para configurar los encabezados de caché
+app.use((req, res, next) => {
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+  next();
+});
+
 // 8. Se invoca el modulo de la conexión de la base de datos
 const connection = require('./database/db');
 
@@ -37,6 +52,15 @@ const connection = require('./database/db');
 app.get('/', (req,res)=>{
     res.render('inicio');
 })
+
+app.get('/logout', (req, res) => {
+  req.session.destroy(err => {
+    if (err) {
+      return res.send('Error al cerrar sesión');
+    }
+    res.redirect('/login_admin');
+  });
+});
 
 app.get('/cita/agendar', (req,res)=>{
     res.render('agendar');
@@ -82,34 +106,43 @@ app.get('/login_admin', (req,res)=>{
     res.render('login');
 })
 
+app.get('/logout', (req, res) => {
+  req.session.destroy(err => {
+    if (err) {
+      return res.send('Error al cerrar sesión');
+    }
+    res.redirect('/login_admin');
+  });
+});
+
 app.get('/registro_admin', (req,res)=>{
     res.render('registro_admin');
 })
 
-app.get('/auth/utilidades_admin', (req,res)=>{
-    res.render('utilidades_admin');
-})
+app.get('/utilidades_admin', checkAuth, (req, res) => {
+  res.render('utilidades_admin');
+});
 
-app.get('/auth/utilidades_admin/vistacrud/editar_productos', (req, res) => {
+app.get('/utilidades_admin/vistacrud/editar_productos', checkAuth, (req, res) => {
     res.render('editar_productos')
 })
 
-app.get('/auth/utilidades_admin/vistacrud_Servicios/editar_servicios', (req, res) => {
+app.get('/utilidades_admin/vistacrud_Servicios/editar_servicios', checkAuth, (req, res) => {
     res.render('editar_servicios')
 })
 
-app.get('/auth/utilidades_admin/vistacrud/agregar_productos', (req, res) => {
+app.get('/utilidades_admin/vistacrud/agregar_productos', checkAuth, (req, res) => {
   res.render('agregar_productos')
 })
 
-app.get('/auth/utilidades_admin/vistacrud_Servicios/agregar_servicios', (req, res) => {
+app.get('/utilidades_admin/vistacrud_Servicios/agregar_servicios', checkAuth, (req, res) => {
   res.render('agregar_servicios')
 })
 
-app.get('/auth/utilidades_admin/vistacrud', (req, res) => {
+app.get('/utilidades_admin/vistacrud', checkAuth, (req, res) => {
     res.render('vistacrud')
 })
-app.get('/auth/utilidades_admin/vistacrud_Servicios', (req, res) => {
+app.get('/utilidades_admin/vistacrud_Servicios', checkAuth, (req, res) => {
     res.render('vistacrud_Servicios')
 })
 
@@ -125,56 +158,112 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // 10. Registrar usuarios
-app.post('/register', async(req,res)=>{
-    const nombreUsuario = req.body.nombreUsuario;
-    const apellidoUsuario = req.body.apellidoUsuario;
-    const usuario = req.body.usuario;
-    const contrasenia = req.body.contrasenia;
-    let contraseniaHassh = await bcryptjs.hash(contrasenia,8);
+app.post('/register', async (req, res) => {
+  const nombreUsuario = req.body.nombreUsuario;
+  const apellidoUsuario = req.body.apellidoUsuario;
+  const usuario = req.body.usuario;
+  const contrasenia = req.body.contrasenia;
+  let contraseniaHash = await bcryptjs.hash(contrasenia,8);
 
-    connection.query('INSERT INTO usuarios SET  ?',
-        {nombre_Usuario:nombreUsuario, apellido_Usuario:apellidoUsuario, usuario:usuario, contrasenia:contraseniaHassh},
-    async (error, results)=>{
-        if(error){
-            console.log("Error " + error);
-        }
-        else{
-            res.render('login', {
-                alert: true,
-				alertTitle: "Registro usuario",
-				alertMessage: "¡Registro exitoso!",
-				alertIcon:'success',
-				showConfirmButton: true,
-				timer: false,
-				ruta: '/login_admin'
-            });
-        }
-    });
-})
+  // Verificar si el usuario ya existe
+  connection.query('SELECT * FROM usuarios WHERE usuario = ?', [usuario], (error, results) => {
+      if (error) {
+          console.error("Error al verificar el usuario:", error);
+          return res.render('registro_admin', {
+              alert: true,
+              alertTitle: "Error",
+              alertMessage: "Hubo un error al verificar el usuario.",
+              alertIcon: 'error',
+              showConfirmButton: true,
+              timer: false,
+              ruta: '/registro_admin'
+          });
+      }
+      if (results.length > 0) {
+          // Usuario ya existe
+          return res.render('registro_admin', {
+              alert: true,
+              alertTitle: "Registro usuario",
+              alertMessage: "¡El usuario ya existe, por favor elija otro!",
+              alertIcon: 'warning',
+              showConfirmButton: true,
+              timer: false,
+              ruta: '/registro_admin'
+          });
+      } else {
+          // Insertar el nuevo usuario
+          connection.query('INSERT INTO usuarios SET ?', {
+              nombre_Usuario: nombreUsuario,
+              apellido_Usuario: apellidoUsuario,
+              usuario: usuario,
+              contrasenia: contraseniaHash
+          }, (error, results) => {
+              if (error) {
+                  console.error("Error al registrar el usuario:", error);
+                  return res.render('registro_admin', {
+                      alert: true,
+                      alertTitle: "Error",
+                      alertMessage: "Hubo un error al registrar el usuario.",
+                      alertIcon: 'error',
+                      showConfirmButton: true,
+                      timer: false,
+                      ruta: '/registro_admin'
+                  });
+              } else {
+                  return res.render('login', {
+                      alert: true,
+                      alertTitle: "Registro usuario",
+                      alertMessage: "¡Registro exitoso!",
+                      alertIcon: 'success',
+                      showConfirmButton: true,
+                      timer: false,
+                      ruta: '/login_admin'
+                  });
+              }
+          });
+      }
+  });
+});
+
 
 // 11. Auntenticacion
-app.post('/auth', async(req,res)=>{
-    const usuario = req.body.usuario;
-    const contrasenia = req.body.contrasenia;
+app.post('/auth', async (req, res) => {
+  const usuario = req.body.usuario;
+  const contrasenia = req.body.contrasenia;
 
-    if(usuario && contrasenia){
-        connection.query('SELECT * FROM usuarios WHERE usuario = ?', [usuario], async(error,results)=>{
-            if(results.length === 0 || !(await bcryptjs.compare(contrasenia, results[0].contrasenia))){
-                res.render('login',{
-                    alert: true,
-                    alertTitle: "Error",
-                    alertMessage: "USUARIO y/o PASSWORD incorrectas",
-                    alertIcon:'error',
-                    showConfirmButton: true,
-                    timer: false,
-                    ruta: '/login_admin'  
-                });
-            }else{
-                res.render('utilidades_admin');
-            }
-        })
-    }
-})
+  if (usuario && contrasenia) {
+    connection.query('SELECT * FROM usuarios WHERE usuario = ?', [usuario], async (error, results) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send('Error en el servidor');
+      } else if (results.length === 0 || !(await bcryptjs.compare(contrasenia, results[0].contrasenia))) {
+        res.render('login', {
+          alert: true,
+          alertTitle: "Error",
+          alertMessage: "USUARIO y/o PASSWORD incorrectas",
+          alertIcon: 'error',
+          showConfirmButton: true,
+          timer: false,
+          ruta: '/login_admin'
+        });
+      } else {
+        req.session.user = results[0]; // Guarda la información del usuario en la sesión
+        res.render('utilidades_admin');
+      }
+    });
+  } else {
+    res.render('login', {
+      alert: true,
+      alertTitle: "Error",
+      alertMessage: "Por favor ingrese usuario y contraseña",
+      alertIcon: 'error',
+      showConfirmButton: true,
+      timer: false,
+      ruta: '/login_admin'
+    });
+  }
+});
+
 
 // Agregar un producto 
 
@@ -206,7 +295,7 @@ app.post('/productos', upload.single('imagen_producto'), (req, res) => {
           alertIcon: 'success',
           showConfirmButton: true,
           timer: false,
-          ruta: '/auth/utilidades_admin/vistacrud/agregar_productos'
+          ruta: '/utilidades_admin/vistacrud/agregar_productos'
         });
       }
     }
@@ -251,7 +340,7 @@ app.put('/productos/:id', upload.single('imagen_producto'), (req, res) => {
   });
   
   //Muestra todos los productos en el CRUD
-app.get('/auth/utilidades_admin/vistacrud/editar_productos/:id', (req, res) => {
+app.get('/utilidades_admin/vistacrud/editar_productos/:id', (req, res) => {
   const productoId = req.params.id;
   const query = 'SELECT * FROM productos WHERE id_Producto = ?';
 
@@ -304,7 +393,7 @@ app.get('/auth/utilidades_admin/vistacrud/editar_productos/:id', (req, res) => {
             alertIcon: 'success',
             showConfirmButton: true,
             timer: false,
-            ruta: '/auth/utilidades_admin/vistacrud_Servicios/agregar_servicios'
+            ruta: '/utilidades_admin/vistacrud_Servicios/agregar_servicios'
           });
         }
       }

@@ -58,7 +58,7 @@
 
   <script>
     document.getElementById('btn_regreso').addEventListener('click', function() {
-      window.location.href = '/auth/utilidades_admin/vistacrud';
+      window.location.href = '/utilidades_admin/vistacrud';
     });
 
     const queryString = window.location.search;
@@ -89,7 +89,7 @@
       .then(data => {
         if (data.message === 'Producto actualizado con éxito') {
           alert('Producto actualizado con éxito');
-          window.location.href = '/auth/utilidades_admin/vistacrud';
+          window.location.href = '/utilidades_admin/vistacrud';
         } else {
           alert('Error al actualizar producto');
         }

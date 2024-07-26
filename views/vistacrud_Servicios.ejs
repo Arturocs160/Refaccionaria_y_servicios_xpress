@@ -41,15 +41,15 @@
   </div>
   <script>
     document.getElementById('btn_regresar').addEventListener('click', function() {
-      window.location.href = '/auth/utilidades_admin/';
+      window.location.href = '/utilidades_admin/';
     });
 
     document.getElementById('btn_agregar').addEventListener('click', function() {
-      window.location.href = '/auth/utilidades_admin/vistacrud_Servicios/agregar_servicios'; 
+      window.location.href = '/utilidades_admin/vistacrud_Servicios/agregar_servicios'; 
     });
 
     function irEditarServicio(idServicio){
-      window.location.href = `/auth/utilidades_admin/vistacrud_Servicios/editar_servicios?id=${idServicio}`;
+      window.location.href = `/utilidades_admin/vistacrud_Servicios/editar_servicios?id=${idServicio}`;
     };
 
     fetch('/api/servicios')
