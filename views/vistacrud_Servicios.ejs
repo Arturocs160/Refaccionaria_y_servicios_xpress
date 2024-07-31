@@ -48,9 +48,9 @@
       window.location.href = '/utilidades_admin/vistacrud_Servicios/agregar_servicios'; 
     });
 
-    function irEditarServicio(idServicio){
+    function irEditarServicio(idServicio) {
       window.location.href = `/utilidades_admin/vistacrud_Servicios/editar_servicios?id=${idServicio}`;
-    };
+    }
 
     fetch('/api/servicios')
       .then(response => response.json())
@@ -64,7 +64,6 @@
             <td class="relleno">${servicio.nombre_Servicio}</td>
             <td class="relleno">${servicio.desc_Servicio}</td>
             <td class="relleno">${servicio.precio}</td>
-            
             <td class="relleno" style="display:flex; margin:0px;">
               <button style="background-color: transparent; border-style: none; cursor: pointer;" class="btn_modificar" data-id="${servicio.id_Servicio}">
                 <img class="anadir" src="/resources/assets/editar.png" alt="">
@@ -87,12 +86,12 @@
         document.querySelectorAll('.btn_eliminar').forEach(boton => {
           boton.addEventListener('click', function() {
             const id_Servicio = this.getAttribute('data-id');
-            fetch(`/servicios/${id_Servicio}`, {
+            fetch(`/api/servicios/${id_Servicio}`, {
               method: 'DELETE'
             })
             .then(response => response.json())
             .then(data => {
-              if (data.mensaje === 'Servicio eliminado con éxito') {
+              if (data.message === 'Servicio eliminado con éxito') {
                 alert('Servicio eliminado con éxito');
                 location.reload(); 
               } else {
@@ -118,7 +117,6 @@
               <td class="relleno">${servicio.nombre_Servicio}</td>
               <td class="relleno">${servicio.desc_Servicio}</td>
               <td class="relleno">${servicio.precio}</td>
-              
               <td class="relleno" style="display:flex; margin:0px;">
                 <button style="background-color: transparent; border-style: none; cursor: pointer;" class="btn_modificar" data-id="${servicio.id_Servicio}">
                   <img class="anadir" src="/resources/assets/editar.png" alt="">

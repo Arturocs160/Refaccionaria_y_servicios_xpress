@@ -1,51 +1,54 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edición de servicios</title>
-    <link rel="stylesheet" href="/resources/css/styles.css" />
-  </head>
-  <body>
-    <div class="contenedor">
-      <div class="contenedor__img">
-        <a>
-          <img style="background-color: transparent; border-style: none; cursor: pointer;" src="/resources/assets/cerrar.png" id="btn_regreso" class="contenedor__img--cierre"
-        /></a>
-      </div>
-      <div><img src="/resources/assets/img1.png" /></div>
-      <div class="contenedor__items">
-        <form id="editarServicioForm" enctype="multipart/form-data">
-          <input type="hidden" id="idServicio" name="id_Servicio">
-          <label for="nombre_Servicio">
-            Servicio:
-            <input required class="" type="text" placeholder="Servicio" name="nombre_Servicio" id="nombre_Servicio"/>
-          </label>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edición de servicios</title>
+  <link rel="stylesheet" href="/resources/css/styles.css" />
+ 
+</head>
+<body>
+  <div class="contenedor">
+    <div class="contenedor__img">
+      <a>
+        <img style="background-color: transparent; border-style: none; cursor: pointer;" src="/resources/assets/cerrar.png" id="btn_regreso" class="contenedor__img--cierre"/>
+      </a>
+    </div>
+    <div><img src="/resources/assets/img1.png"/></div>
+    <div class="contenedor__items">
+      <form id="editarServicioForm" enctype="multipart/form-data">
+        <input type="hidden" id="idServicio" name="id_Servicio">
+        <input type="hidden" id="url_Img" name="url_Img">
+        <label for="nombre_Servicio">
+          Servicio:
+          <input required type="text" placeholder="Servicio" name="nombre_Servicio" id="nombre_Servicio"/>
+        </label>
       </div>
       <div class="contenedor__items contenedor__items--2">
         <label for="desc_Servicio">
           Descripción:
-          <input class="" type="text" placeholder="Descripción" name="desc_Servicio" id="desc_Servicio" />
+          <input type="text" placeholder="Descripción" name="desc_Servicio" id="desc_Servicio"/>
         </label>
       </div>
       <div class="contenedor__items">
         <label for="precio">
           Precio:
-          <input class="" type="number" placeholder="$" name="precio" id="precio"/>
+          <input type="number" placeholder="$" name="precio" id="precio"/>
         </label>
       </div>
       <div class="contenedor__items">
         <label for="imagen_servicio">
           Imagen:
-          <input type="file" name="imagen_servicio" id="imagen_servicio" accept="image/*">
+          <input required type="file" name="imagen_servicio" id="imagen_servicio" accept="image/*">
         </label>
+       
       </div>
       <button type="submit" class="button">Guardar</button>
-        </form>
+      </form>
     </div>
-  
+
     <script>
-      document.getElementById('btn_regreso').addEventListener('click',function(){
+      document.getElementById('btn_regreso').addEventListener('click', function() {
         window.location.href = '/utilidades_admin/vistacrud_Servicios';
       });
 
@@ -60,6 +63,13 @@
           document.getElementById('nombre_Servicio').value = servicio.nombre_Servicio;
           document.getElementById('desc_Servicio').value = servicio.desc_Servicio;
           document.getElementById('precio').value = servicio.precio;
+
+          // Mostrar la imagen actual
+          const imagenActual = document.getElementById('imagenActual');
+          imagenActual.src = servicio.url_Img || '';
+
+          // Actualizar el campo oculto con la URL de la imagen actual
+          document.getElementById('url_Img').value = servicio.url_Img || '';
         })
         .catch(error => console.error('Error:', error));
 

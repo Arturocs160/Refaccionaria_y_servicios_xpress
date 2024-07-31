@@ -80,6 +80,11 @@ img {
   border-radius: 15px;
   cursor: pointer;
 }
+.contenedor__items img {
+  max-width: 2000px;
+  height: auto;
+  margin-top: 10px;
+}
 @media(max-width:600px){
   body {
     background-color: #fff;
