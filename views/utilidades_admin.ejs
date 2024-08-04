@@ -20,7 +20,7 @@
           <button id="btn_editarServicios" class="items__button button">
             Administrar Servicios
           </button>
-          <button class="items__button button">
+          <button id="btn_reporteCitas" class="items__button button">
             Reporte de citas
           </button>
           <button class="items__button">Ver registro completo</button>
@@ -40,6 +40,10 @@
     
     document.getElementById('btn_editarServicios').addEventListener('click',function(){
       window.location.href = '/utilidades_admin/vistacrud_Servicios';
+    })
+
+    document.getElementById('btn_reporteCitas').addEventListener('click',function(){
+      window.location.href = '/utilidades_admin/reporte_citas';
     })
   </script>
 </html>

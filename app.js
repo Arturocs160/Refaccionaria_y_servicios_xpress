@@ -1,6 +1,10 @@
 // 1. Se invoca a express
 const express = require('express');
 const app = express();
+const bodyParser = require('body-parser');
+const PDFDocument = require('pdfkit');
+const moment = require('moment');
+require('moment/locale/es');
 
 // 2. Se setea urlencoded para capturar los datos del formulario
 app.use(express.urlencoded({extended:false}));

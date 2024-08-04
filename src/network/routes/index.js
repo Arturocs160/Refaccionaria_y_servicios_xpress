@@ -98,8 +98,13 @@ router.get('/utilidades_admin/vistacrud_Servicios/agregar_servicios', checkAuth,
 router.get('/utilidades_admin/vistacrud', checkAuth, (req, res) => {
     res.render('vistacrud')
 })
+
 router.get('/utilidades_admin/vistacrud_Servicios', checkAuth, (req, res) => {
     res.render('vistacrud_Servicios')
+})
+
+router.get('/utilidades_admin/reporte_citas', checkAuth, (req, res) => {
+  res.render('reporte')
 })
 
 module.exports = router;

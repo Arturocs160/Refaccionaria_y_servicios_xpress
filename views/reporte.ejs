@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Buscador</title>
+    <link rel="stylesheet" href="/resources/css/reporte.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+    <body>
+        <div>
+            <div class="centro">
+                <button id="btn_regresar">
+                    <img src="/resources/assets/cerrar.png" id="imagenes">
+                </button>
+                
+                <div id="main">
+                    <h1 style="font-size: 50px;">Reporte de Citas</h1>
+                </div>
+                <div id="master">
+                    <form id="generarReporte" action="/reporte" method="POST">
+                        <div id="fechas">
+                            <label for="Inicio">Inicio</label>
+                            <input type="date" id="fechaInicio"  name="fechaInicio" required>
+                            <label for="Final">Final</label>
+                            <input type="date" id="fechaFin" name="fechaFin" required>
+                            <button id="descargar" type="submit">Descargar Archivo</button>
+                        </div>
+                    </form>  
+                </div>
+            </div>
+        </div>
+    </body>
+    <script>    
+    document.getElementById('btn_regresar').addEventListener('click',function(){
+        window.location.href = '/utilidades_admin';
+    })
+    </script>
+</html>

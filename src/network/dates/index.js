@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const connection = require('../../../database/db');
+const PDFDocument = require('pdfkit');
+const moment = require('moment');
+require('moment/locale/es');
+
 
 //Agendar cita
 
@@ -84,6 +88,61 @@ router.delete('/api/cancelar-cita/:num_Cita', (req, res) => {
               res.status(404).send('Cita no encontrada.');
           }
       }
+  });
+});
+
+// Ruta para el manejo del reporte
+const path = require('path');
+const imagePath = path.join(__dirname, '..', '..', '..', 'public', 'assets', 'logo.png');
+
+router.post('/reporte', (req, res)=>{
+  const {fechaInicio, fechaFin} = req.body;
+  const query = `SELECT * FROM citas WHERE fecha BETWEEN ? AND ?`;
+
+
+  connection.query(query, [fechaInicio, fechaFin], (err, results)=>{
+      if(err) throw err;
+      
+      // Creacion del documento pdf
+      const doc = new PDFDocument();
+      const buffers = [];
+
+      doc.on('data', buffers.push.bind(buffers));
+      doc.on('end', ()=>{
+          const pdfData = Buffer.concat(buffers);
+          res.writeHead(200, {
+              'Content-Length': Buffer.byteLength(pdfData),
+              'Content-Type': 'aplication/pdf',
+              'content-Disposition': 'attachment;filename=reporte_citas.pdf', 
+          }).end(pdfData);
+      });
+
+      doc.circle(60,55,50)
+      .fillOpacity(1)
+      .fillAndStroke("black", "#000")
+
+      // Creamos el contenido del pdf
+      // Fit the image in the dimensions, and center it both horizontally and vertically
+      doc.image(imagePath, 13, 5, {fit: [100, 100], align: 'center', valign: 'center',})
+      doc.moveDown(1);
+      doc.fontSize(25).text('Reporte de citas', {align: 'center'});
+      doc.moveDown();
+      doc.fontSize(12);
+
+      results.forEach(row =>{
+          const fechaFormateada = moment(row.fecha).locale('es').format('LL');
+          doc.text(`Numero de cita: ${row.num_Cita}`);
+          doc.text(`Fecha: ${fechaFormateada}`);
+          doc.text(`Hora: ${row.hora}`);
+          doc.text(`Nombre(s): ${row.nombre_Cliente}`);
+          doc.text(`Apellido(s): ${row.apellido1} ${row.apellido2}`);
+          doc.text(`Telefono: ${row.telefono}`);
+          doc.moveDown(2);
+      });
+
+      // Guardamos el documento
+      doc.end();
+
   });
 });
 
