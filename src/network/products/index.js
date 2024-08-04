@@ -70,66 +70,65 @@ router.post('/productos', upload.single('imagen_producto'), (req, res) => {
   });
   
   
-    // Eliminar un producto
-    router.delete('/productos/:id_Producto', (req, res) => {
-      const { id_Producto } = req.params;
-      connection.query('DELETE FROM productos WHERE id_Producto = ?', [id_Producto], (err, result) => {
-        if (err) {
-          res.status(500).json({ error: 'Error al eliminar producto: ' + err.message });
-          return;
-        }
-        if (result.affectedRows === 0) {
-          res.status(404).json({ mensaje: 'Producto no encontrado' });
-          return;
-        }
-        res.json({ mensaje: 'Producto eliminado con éxito' });
-      });
-    });
-    
-    //Muestra todos los productos en el CRUD
-  router.get('/utilidades_admin/vistacrud/editar_productos/:id', (req, res) => {
-    const productoId = req.params.id;
-    const query = 'SELECT * FROM productos WHERE id_Producto = ?';
-  
-    connection.query(query, [productoId], (error, results) => {
-      if (error) {
-        console.error('Error al obtener el producto:', error);
-        res.status(500).send('Error al obtener el producto');
-      } else {
-        res.render('editar_productos', { producto: results[0] });
-      }
-    });
-  });
-  
-  // Muestra el producto a editar en Formulario Editar
-  
-  router.get('/api/productos/:id', (req, res) => {
-    const productId = req.params.id;
-    connection.query(
-      'SELECT * FROM productos WHERE id_Producto = ?',
-      [productId],
-      (err, results) => {
-        if (err) {
-          console.error("Error al obtener el producto:", err);
-          res.status(500).json({ message: 'Error al obtener el producto' });
-        } else {
-          res.json(results[0]);
-        }
-      }
-    );
-  });
-  
-   //Mostrar productos en el Front /productos
-  
-   router.get('/api/productos', (req, res) => {
-    connection.query('SELECT * FROM productos', (err, results) => {
+// Eliminar un producto
+router.delete('/productos/:id_Producto', (req, res) => {
+  const { id_Producto } = req.params;
+    connection.query('DELETE FROM productos WHERE id_Producto = ?', [id_Producto], (err, result) => {
       if (err) {
-        console.log("Error " + err);
-        res.status(500).json({ message: 'Error al obtener los productos' });
-      } else {
-        res.json(results);
+        res.status(500).json({ error: 'Error al eliminar producto: ' + err.message });
+        return;
       }
+      if (result.affectedRows === 0) {
+        res.status(404).json({ mensaje: 'Producto no encontrado' });
+        return;
+      }
+      res.json({ mensaje: 'Producto eliminado con éxito' });
     });
+});
+    
+//Muestra todos los productos en el CRUD
+router.get('/utilidades_admin/vistacrud/editar_productos/:id', (req, res) => {
+  const productoId = req.params.id;
+  const query = 'SELECT * FROM productos WHERE id_Producto = ?';
+  
+  connection.query(query, [productoId], (error, results) => {
+    if (error) {
+      console.error('Error al obtener el producto:', error);
+      res.status(500).send('Error al obtener el producto');
+    } else {
+      res.render('editar_productos', { producto: results[0] });
+    }
   });
+});
+  
+// Muestra el producto a editar en Formulario Editar 
+router.get('/api/productos/:id', (req, res) => {
+  const productId = req.params.id;
+  connection.query(
+    'SELECT * FROM productos WHERE id_Producto = ?',
+    [productId],
+    (err, results) => {
+      if (err) {
+        console.error("Error al obtener el producto:", err);
+        res.status(500).json({ message: 'Error al obtener el producto' });
+      } else {
+        res.json(results[0]);
+      }
+    }
+  );
+});
+  
+
+//Mostrar productos en el Front /productos
+router.get('/api/productos', (req, res) => {
+  connection.query('SELECT * FROM productos', (err, results) => {
+    if (err) {
+      console.log("Error " + err);
+      res.status(500).json({ message: 'Error al obtener los productos' });
+    } else {
+      res.json(results);
+    }
+  });
+});
 
   module.exports = router;

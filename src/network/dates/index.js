@@ -146,4 +146,41 @@ router.post('/reporte', (req, res)=>{
   });
 });
 
+// Ruta para obtener citas pendientes
+router.get('/citas/pendientes', (req, res) => {
+  const query = "SELECT * FROM citas WHERE estado = 'pendiente'";
+  connection.query(query, (err, results) => {
+      if (err) throw err;
+      res.json(results);
+  });
+});
+
+// Ruta para obtener citas aceptadas
+router.get('/citas/aceptadas', (req, res) => {
+  const query = "SELECT * FROM citas WHERE estado = 'aceptado'";
+  connection.query(query, (err, results) => {
+      if (err) throw err;
+      res.json(results);
+  });
+});
+
+// Ruta para aceptar una cita
+router.put('/citas/aceptar/:num_Cita', (req, res) => {
+  const num_Cita = req.params.num_Cita;
+
+  // Actualiza el estado de la cita a 'aceptado'
+  connection.query('UPDATE citas SET estado = "Aceptado" WHERE num_Cita = ?', [num_Cita], (err, results) => {
+      if (err) {
+          console.error('Error al actualizar la cita:', err);
+          res.status(500).send('Error interno del servidor');
+          return;
+      }
+      if (results.affectedRows === 0) {
+          res.status(404).send('Cita no encontrada');
+          return;
+      }
+      res.send('Cita aceptada');
+  });
+});
+
 module.exports = router;

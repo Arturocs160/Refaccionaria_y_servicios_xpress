@@ -23,7 +23,7 @@
           <button id="btn_reporteCitas" class="items__button button">
             Reporte de citas
           </button>
-          <button class="items__button">Ver registro completo</button>
+          <button id="btn_registroCitas" class="items__button">Ver registro completo</button>
         </div>
       
       </div>
@@ -44,6 +44,10 @@
 
     document.getElementById('btn_reporteCitas').addEventListener('click',function(){
       window.location.href = '/utilidades_admin/reporte_citas';
+    })
+
+    document.getElementById('btn_registroCitas').addEventListener('click',function(){
+      window.location.href = '/utilidades_admin/registro_citas';
     })
   </script>
 </html>

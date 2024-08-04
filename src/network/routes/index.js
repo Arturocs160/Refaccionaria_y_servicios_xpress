@@ -103,6 +103,10 @@ router.get('/utilidades_admin/vistacrud_Servicios', checkAuth, (req, res) => {
     res.render('vistacrud_Servicios')
 })
 
+router.get('/utilidades_admin/registro_citas', checkAuth, (req, res) => {
+  res.render('registro_citas')
+})
+
 router.get('/utilidades_admin/reporte_citas', checkAuth, (req, res) => {
   res.render('reporte')
 })

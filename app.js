@@ -1,10 +1,6 @@
 // 1. Se invoca a express
 const express = require('express');
 const app = express();
-const bodyParser = require('body-parser');
-const PDFDocument = require('pdfkit');
-const moment = require('moment');
-require('moment/locale/es');
 
 // 2. Se setea urlencoded para capturar los datos del formulario
 app.use(express.urlencoded({extended:false}));
@@ -29,17 +25,9 @@ app.use(session({
     saveUninitialized: true
 }));
 
-//7. Middleware para configurar los encabezados de caché
-app.use((req, res, next) => {
-  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
-  next();
-});
-
 // 8. Establecemos rutas
 const routes = require ("./src/network")
 routes(app)
-
-//9. Configuracion multer
 
 const multer = require('multer');
 const path = require('path');
@@ -56,8 +44,6 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
   app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
-  //
 
 app.listen(3000, (req,res)=>{
     console.log("SERVER RUNNING IN http://localhost/3000");

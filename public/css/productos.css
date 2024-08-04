@@ -65,20 +65,23 @@ h3{
     box-sizing: border-box;
     background-color:  rgb(217,217,217);
 }
+
 .card h2 {
     margin-top: 0;
 }
+
 .cards-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
 }
+
 .card img {
-    max-width: 50%;
+    max-width: 100%;
     height: auto;
     border-radius: 8px;
-
 }
+
 @media(max-width:800px){
     .container{
         flex-direction: column;

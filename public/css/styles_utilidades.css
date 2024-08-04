@@ -73,6 +73,7 @@ font-size: 70px;
   text-align: center;
 }
 .items__button {
+  width: 300px;
   background-color: #d93232;
   padding: 10px 40px;
   font-size: 20px;
@@ -82,7 +83,7 @@ font-size: 70px;
   margin-top: 20px;
   cursor: pointer;
   transition: all 0.3s;
-  text-align: justify;
+  text-align: center;
 }
 .items__button:hover {
   background-color: #ffffff;

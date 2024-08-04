@@ -9,7 +9,7 @@
 </head>
 <body>
     <header>
-        <img src="/resources/assets/logo.png" alt="logo Refaccionaría y servicios Xpress">
+        <a href="/"><img src="/resources/assets/logo.png" alt="logo Refaccionaría y servicios Xpress"></a>
         <input type="checkbox" id="check">
         <label for="check" class="mostrar-menu">
             &#8801
@@ -51,25 +51,25 @@
                 <img src="/resources/assets/youtube.png" alt="">
             </div>
         </footer>
-        <script>
-            fetch('/api/servicios')
-       .then(response => response.json())
-       .then(servicios => {
-           const serviciosLista = document.getElementById('servicios-lista');
-           servicios.forEach(servicios => {
-               const serviciosCard = document.createElement('div');
-               serviciosCard.className = 'card';
-               serviciosCard.innerHTML = `
-                   <h2>${servicios.nombre_Servicio}</h2>
-                   <p>Descripción: ${servicios.desc_Servicio}</p>
-                   <p>Precio: $${servicios.precio}</p>
-                   <img src="${servicios.url_Img}" alt="Imagen del servicio">
-               `;
-               serviciosLista.appendChild(serviciosCard);
-           });
-       })
-       .catch(error => console.error('Error fetching productos:', error));
-         </script>
 </body>
+    <script>
+    fetch('/api/servicios')
+        .then(response => response.json())
+        .then(servicios => {
+        const serviciosLista = document.getElementById('servicios-lista');
+        servicios.forEach(servicios => {
+            const serviciosCard = document.createElement('div');
+            serviciosCard.className = 'card';
+            serviciosCard.innerHTML = `
+                <h2>${servicios.nombre_Servicio}</h2>
+                <p>Descripción: ${servicios.desc_Servicio}</p>
+                <p>Precio: $${servicios.precio}</p>
+                <img src="${servicios.url_Img}" alt="Imagen del servicio">
+            `;
+            serviciosLista.appendChild(serviciosCard);
+        });
+        })
+    .catch(error => console.error('Error fetching productos:', error));
+    </script>
 </html>
 

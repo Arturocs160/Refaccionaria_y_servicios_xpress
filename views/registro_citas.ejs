@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/resources/css/global.css">
+    <link rel="stylesheet" href="/resources/css/registro_citas.css">
+    <title>Registro citas</title>
+</head>
+<body>
+    <div class="centro">
+        <div>
+            <a href="/utilidades_admin"><img src="/resources/assets/cerrar.png" alt="Boton para regresar"></a>
+        </div>
+        <div class="container-titulo">
+            <h1>Registro de Citas</h1>
+        </div>
+        <div class="container-botones">
+            <button id="btn_citasPendientes" class="boton-grande">Citas pendientes</button>
+            <button id="btn_citasAceptadas" class="boton-grande">Citas aceptadas</button>
+        </div>
+        <div id="container-infoCitas">
+            <div class="container-card" id="lista-citas">
+            </div>
+        </div>
+    </div>
+    <script>
+        let mostrarBotonAceptar = false;
+
+        document.getElementById('btn_citasPendientes').addEventListener('click', () => {
+            fetch('/citas/pendientes')
+                .then(response => response.json())
+                .then(data => {
+                    mostrarBotonAceptar = true;
+                    mostrarCitas(data);
+                });
+        });
+
+        document.getElementById('btn_citasAceptadas').addEventListener('click', () => {
+            fetch('/citas/aceptadas')
+                .then(response => response.json())
+                .then(data => {
+                    mostrarBotonAceptar = false;
+                    mostrarCitas(data);
+                });
+        });
+
+        let servicios = [];
+
+        // Obtener la lista de servicios al cargar la página
+        fetch('/api/servicios')
+            .then(response => response.json())
+            .then(data => {
+                servicios = data;
+            })
+            .catch(error => console.error('Error al obtener los servicios:', error));
+
+        function mostrarCitas(citas) {
+            const container = document.getElementById('lista-citas');
+            container.innerHTML = ''; // Limpia el contenido previo
+
+            if (citas.length === 0) {
+                container.innerHTML = '<p>No hay citas en este estado.</p>';
+                return;
+            }
+
+            citas.forEach(cita => {
+                const fecha = new Date(cita.fecha);
+                const fechaFormateada = fecha.toLocaleDateString('es-ES', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                });
+
+                // Buscar el nombre del servicio correspondiente
+                const servicio = servicios.find(servicio => servicio.id_Servicio === cita.id_Servicio);
+                const nombreServicio = servicio ? servicio.nombre_Servicio : 'Servicio no encontrado';
+
+                const citaCard = document.createElement('div');
+                citaCard.className = 'card';
+                citaCard.innerHTML = `
+                    <p>Nombre(s): ${cita.nombre_Cliente}</p>
+                    <p>Apellido(s): ${cita.apellido1} ${cita.apellido2}</p>
+                    <p>Fecha: ${fechaFormateada}</p>
+                    <p>Hora: ${cita.hora}</p>
+                    <p>Correo: ${cita.correo}</p>
+                    <p>Teléfono: ${cita.telefono}</p>
+                    <p>Estado: ${cita.estado}</p>
+                    <p class="servicio">Servicio: ${nombreServicio}</p>
+                    ${mostrarBotonAceptar ? `<button class="boton-chico" onclick="aceptarCita('${cita.num_Cita}', '${cita.telefono}')"><a>Aceptar cita</a></button>` : ''}
+                `;
+                container.appendChild(citaCard);
+            });
+        }
+
+        function aceptarCita(num_Cita, telefono) {
+            fetch(`/citas/aceptar/${num_Cita}`, { method: 'PUT' })
+                .then(response => {
+                    if (response.ok) {
+                        // Redirigir al chat de WhatsApp
+                        const whatsappURL = `https://wa.me/${telefono}?text=Tu cita ha sido aceptada`;
+                        window.location.href = whatsappURL;
+                    } else {
+                        console.error('Error al actualizar el estado de la cita');
+                    }
+                })
+            .catch(error => console.error('Error al aceptar la cita:', error));
+        }
+    </script>
+</body>
+</html>

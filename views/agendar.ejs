@@ -11,7 +11,7 @@
 </head>
 <body style="overflow-x: hidden;">
     <header>
-        <img src="/resources/assets/logo.png" alt="logo Refaccionaría y servicios Xpress">
+        <a href="/"><img src="/resources/assets/logo.png" alt="logo Refaccionaría y servicios Xpress"></a>
         <input type="checkbox" id="check">
         <label for="check" class="mostrar-menu">
             &#8801
@@ -134,11 +134,11 @@
         const timepicker = document.getElementById('horas');
         timepicker.innerHTML = ''; // Limpiar las opciones anteriores
 
-        const allTimes = ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30',
+        const horasDisponibles = ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30',
             '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00'
         ];
 
-        allTimes.forEach(time => {
+        horasDisponibles.forEach(time => {
             const option = document.createElement('option');
             option.value = time;
             option.text = time;
