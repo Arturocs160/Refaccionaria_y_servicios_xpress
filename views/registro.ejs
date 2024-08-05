@@ -32,33 +32,46 @@
         <h1>Registro</h1>
     </div>
     <div class="container">
-        <div class="izquierda-registro">
-            <div><h3>Nombre: </h3><h3 id="nombre"></h3></div>
-            <div><h3>Correo electrónico: </h3><h3 id="correo"></h3></div>
-            <div><h3>Fecha: </h3><h3 id="fecha"></h3></div>
-            <div><h3>Hora: </h3><h3 id="hora"></h3></div>
+      <div class="datos-registro">
+                <div id="izquierda-registro"><h3>Numero de la cita: </h3></div>
+                <div id="derecha-registro"><h3 id="num_Cita"></h3></div>
+                <div id="izquierda-registro"><h3>Servicio: </h3></div>
+                <div id="derecha-registro"><h3 id="servicio"></h3></div>
         </div>
-        <div class="derecha-registro">
-            <div><h3>Numero de la cita: </h3><h3 id="num_Cita"></h3></div>
-            <div><h3>Servicio: </h3><h3 id="servicio"></h3></div>
-            <div><button id="rojo"><a>Cancelar cita</a></button></div>
+    </div>    
+        <div >
+            <div class="datos-registro">
+                <div id="izquierda-registro"><h3>Nombre: </h3></div>
+                <div id="derecha-registro"><h3 id="nombre"></h3></div>
+                <div id="izquierda-registro"><h3>Fecha: </h3></div>
+                <div id="derecha-registro"><h3 id="fecha"></h3></div>
+        </div>        
+                
+        <div class="datos-registro">
+                <div id="izquierda-registro"><h3>Correo electrónico: </h3></div>
+                <div id="derecha-registro"><h3 id="correo"></h3></div>
+                <div id="izquierda-registro"><h3>Hora: </h3></div>
+                <div id="derecha-registro"><h3 id="hora"></h3></div>
         </div>
+           
+     
+   
+    <div class="boton">
+<button id="rojo"><a>Cancelar cita</a></button></div>
+<footer>
+    <div class="contacto">
+        <p>Contacto: </p>
+        <p>Telefono:    238 141 3132</p>
+        <p>Correo electrónico:    joseflorente80@hotmail.com</p>
     </div>
-
-    <footer>
-        <div class="contacto">
-            <p>Contacto </p>
-            <p>Teléfono</p>
-            <p>Correo electrónico</p>
-        </div>
-        <div class="redes">
-            <p>Síguenos: </p>
-            <img src="/resources/assets/facebook.png" alt="">
-            <img src="/resources/assets/instagram.png" alt="">
-            <img src="/resources/assets/twitter.png" alt="">
-            <img src="/resources/assets/youtube.png" alt="">
-        </div>
-    </footer>
+    <div class="redes">
+        <p>Siguenos: </p>
+       <a href="https://www.facebook.com/profile.php?id=100057071901779"><img src="/resources/assets/facebook.png" alt="logo facebook"></a>
+       <a href="https://www.instagram.com/"><img src="/resources/assets/instagram.png" alt=""></a> 
+       <a href="https://x.com/?mx=2"> <img src="/resources/assets/twitter.png" alt=""></a>
+        <a href="https://www.youtube.com/"><img src="/resources/assets/youtube.png" alt=""></a>
+    </div>
+</footer>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // Obtener la información de la cita desde sessionStorage

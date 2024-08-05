@@ -34,20 +34,20 @@
                 <div class="cards-container" id="productos-lista"></div>
             </div>
     </div>
-            <footer>
-                <div class="contacto">
-                    <p>Contacto </p>
-                    <p>Telefono</p>
-                    <p>correo electronico</p>
-                </div>
-                <div class="redes">
-                    <p>Siguenos: </p>
-                    <img src="/resources/assets/facebook.png" alt="">
-                    <img src="/resources/assets/instagram.png" alt="">
-                    <img src="/resources/assets/twitter.png" alt="">
-                    <img src="/resources/assets/youtube.png" alt="">
-                </div>
-            </footer>
+    <footer>
+        <div class="contacto">
+            <p>Contacto: </p>
+            <p>Telefono:    238 141 3132</p>
+            <p>Correo electrónico:    joseflorente80@hotmail.com</p>
+        </div>
+        <div class="redes">
+            <p>Siguenos: </p>
+           <a href="https://www.facebook.com/profile.php?id=100057071901779"><img src="/resources/assets/facebook.png" alt="logo facebook"></a>
+           <a href="https://www.instagram.com/"><img src="/resources/assets/instagram.png" alt=""></a> 
+           <a href="https://x.com/?mx=2"> <img src="/resources/assets/twitter.png" alt=""></a>
+            <a href="https://www.youtube.com/"><img src="/resources/assets/youtube.png" alt=""></a>
+        </div>
+    </footer>
             <script>
                 fetch('/api/productos')
                     .then(response => response.json())
@@ -57,10 +57,11 @@
                         const productoCard = document.createElement('div');
                         productoCard.className = 'card';
                         productoCard.innerHTML = `
+                        <img style="text-align: center;" src="${producto.url_Img}" alt="Imagen del producto">
                         <h2>${producto.nombre_Produc}</h2>
                         <p>Descripción: ${producto.desc_Produc}</p>
                         <p>Precio: $${producto.precio}</p>
-                        <img style="text-align: center;" src="${producto.url_Img}" alt="Imagen del producto">
+                        
                         `;
                         productosLista.appendChild(productoCard);
                     });

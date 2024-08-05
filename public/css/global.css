@@ -45,7 +45,7 @@ header img{
     color: white;
     text-transform: uppercase;
     text-decoration: none;
-    padding: 0 90px;
+    padding: 0 50px;
     transition: 0.4s;
 }
 .mostrar-menu,
@@ -192,7 +192,7 @@ footer p{
         color: white;
     }
     .contacto{
-   
+        width: 100%;
         display: flex;
         flex-direction: row;
         justify-content: space-around;

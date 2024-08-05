@@ -39,16 +39,16 @@
         <div class="boton"><button id="rojo"><a href="./cita/agendar">Agendar cita</a></button></div>
         <footer>
             <div class="contacto">
-                <p>Contacto </p>
-                <p>Telefono</p>
-                <p>correo electronico</p>
+                <p>Contacto: </p>
+                <p>Telefono:    238 141 3132</p>
+                <p>Correo electrónico:    joseflorente80@hotmail.com</p>
             </div>
             <div class="redes">
                 <p>Siguenos: </p>
-                <img src="/resources/assets/facebook.png" alt="">
-                <img src="/resources/assets/instagram.png" alt="">
-                <img src="/resources/assets/twitter.png" alt="">
-                <img src="/resources/assets/youtube.png" alt="">
+               <a href="https://www.facebook.com/profile.php?id=100057071901779"><img src="/resources/assets/facebook.png" alt="logo facebook"></a>
+               <a href="https://www.instagram.com/"><img src="/resources/assets/instagram.png" alt=""></a> 
+               <a href="https://x.com/?mx=2"> <img src="/resources/assets/twitter.png" alt=""></a>
+                <a href="https://www.youtube.com/"><img src="/resources/assets/youtube.png" alt=""></a>
             </div>
         </footer>
 </body>
@@ -61,10 +61,11 @@
             const serviciosCard = document.createElement('div');
             serviciosCard.className = 'card';
             serviciosCard.innerHTML = `
+            <img src="${servicios.url_Img}" alt="Imagen del servicio">
                 <h2>${servicios.nombre_Servicio}</h2>
                 <p>Descripción: ${servicios.desc_Servicio}</p>
                 <p>Precio: $${servicios.precio}</p>
-                <img src="${servicios.url_Img}" alt="Imagen del servicio">
+                
             `;
             serviciosLista.appendChild(serviciosCard);
         });

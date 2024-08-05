@@ -6,7 +6,7 @@
 }
 .izquierda-nosotros img{
     width: 800px;
-    height: 400px;
+    height: 500px;
     display: flex;
     justify-content: start;
     align-items: start;
@@ -22,9 +22,14 @@
 }
 .derecha-nosotros h1 {
     color: white;
+    font-size: 50px;
 }
 .derecha-nosotros p{
+    width: 80%;
+    padding-top:20px ;
     color: white;
+    text-align: center;
+    font-size: 30px;
 }
 /*.den{
     width: 90%;

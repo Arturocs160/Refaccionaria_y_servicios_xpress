@@ -8,7 +8,6 @@
     height: 50vh;
 }
 .contenido{
-    position: relative;
     color: white;
     height: 100%;
     display: flex;

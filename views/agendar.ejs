@@ -33,44 +33,43 @@
     </div>
     <form id="formularioCitas" action="/agendarCita" method="post">
     <div class="container">
-        <div class="campos">
-            <div class="input-agendar">
+        <div class="campos-agendar">
+            <div class="agendar-datos">
                 <h4>Nombre</h4>
-               <input name="nombre_Cliente" id="nombre_Cliente" type="text" required>
-            </div>
-            <div class="input-agendar">
                 <h4>Apellido Paterno</h4>
-               <input name="apellido1" type="text" id="apellido1" required>
-            </div>
-            <div class="input-agendar">
                 <h4>Apellido Materno</h4>
+            </div>
+            <div class="capturar-datos">
+                <input name="nombre_Cliente" id="nombre_Cliente" type="text" required>
+               <input name="apellido1" type="text" id="apellido1" required>
                <input name="apellido2" id="apellido2" type="text">
             </div>
         </div>
         </div>
-            <div class="campos">
-                <div class="input-agendar">
+            <div class="campos-agendar">
+                <div class="agendar-datos">
                     <h4>Correo electronico</h4>
-                   <input name="correo" id="correo" type="email" required>
-                </div>
-                <div class="input-agendar">
                     <h4>Telefono</h4>
+                </div>
+                <div class="capturar-datos">
+                   <input name="correo" id="correo" type="email" required> 
                    <input name="telefono" id="telefono" type="text" required>
                 </div>
-        </div>
-        <div class="campos">
-            <div class="input-agendar">
+                </div>
+
+       
+        <div class="campos-agendar">
+            <div class="agendar-datos">
                 <h4>Servicio</h4>
-                <select name="id_Servicio" id="servicios-lista" required >
-                </select>
-            </div>
-            <div class="input-agendar">
                 <h4>Fecha</h4>
+                <h4>Hora</h4>
+            </div>
+            <div class="capturar-datos">
+            <select name="id_Servicio" id="servicios-lista" required >
+                </select>
                <input autocomplete="off" name="fecha" type="text" id="fechas" required>
                <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
-            </div>
-            <div class="input-agendar">
-                <h4>Hora</h4>
+        
                <select name="hora" id="horas"></select>
             </div>
     </div>
@@ -82,16 +81,16 @@
 
 <footer>
     <div class="contacto">
-        <p>Contacto </p>
-        <p>Telefono</p>
-        <p>correo electronico</p>
+        <p>Contacto: </p>
+        <p>Telefono:    238 141 3132</p>
+        <p>Correo electrónico:    joseflorente80@hotmail.com</p>
     </div>
     <div class="redes">
         <p>Siguenos: </p>
-        <img src="/resources/assets/facebook.png" alt="">
-        <img src="/resources/assets/instagram.png" alt="">
-        <img src="/resources/assets/twitter.png" alt="">
-        <img src="/resources/assets/youtube.png" alt="">
+       <a href="https://www.facebook.com/profile.php?id=100057071901779"><img src="/resources/assets/facebook.png" alt="logo facebook"></a>
+       <a href="https://www.instagram.com/"><img src="/resources/assets/instagram.png" alt=""></a> 
+       <a href="https://x.com/?mx=2"> <img src="/resources/assets/twitter.png" alt=""></a>
+        <a href="https://www.youtube.com/"><img src="/resources/assets/youtube.png" alt=""></a>
     </div>
 </footer>
 </body>
