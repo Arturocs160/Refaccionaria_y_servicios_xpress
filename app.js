@@ -14,7 +14,7 @@ dotenv.config({path:'./env/.env'});
 app.use('/resources', express.static('public'));
 app.use('/resources', express.static(__dirname + '/public'));
 
-// 5. Establecemos el motor de plantillas ejs
+// 5. Establecemos el motor de plantillas ejss
 app.set('view engine', 'ejs');
 
 // 6. Var. de session

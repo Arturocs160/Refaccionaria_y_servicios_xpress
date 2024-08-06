@@ -13,6 +13,13 @@ function checkAuth(req, res, next) {
   }
 
 
+// Middleware para configurar los encabezados de caché
+router.use((req, res, next) => {
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+  next();
+});
+
+
 router.get('/', (req,res)=>{
     res.render('inicio');
 })
