@@ -79,14 +79,32 @@
                 const citaCard = document.createElement('div');
                 citaCard.className = 'card';
                 citaCard.innerHTML = `
-                    <p>Nombre(s): ${cita.nombre_Cliente}</p>
-                    <p>Apellido(s): ${cita.apellido1} ${cita.apellido2}</p>
-                    <p>Fecha: ${fechaFormateada}</p>
-                    <p>Hora: ${cita.hora}</p>
-                    <p>Correo: ${cita.correo}</p>
-                    <p>Teléfono: ${cita.telefono}</p>
-                    <p>Estado: ${cita.estado}</p>
-                    <p class="servicio">Servicio: ${nombreServicio}</p>
+                    <table>
+                        <tr>
+                    <td id="left"><h3>Nombre(s):</h3></td><td><p> ${cita.nombre_Cliente}</p></td>
+                    </tr>
+                    <tr>
+                    <td id="left"><h3>Apellido(s):</h3></td><td><p> ${cita.apellido1} ${cita.apellido2}</p></td>
+                    </tr>
+                    <tr>
+                    <td id="left"> <h3>Fecha:</h3></td><td><p> ${fechaFormateada}</p></td>
+                    </tr>
+                    <tr>
+                    <td id="left"><h3>Hora:</h3></td><td><p>${cita.hora}</p></td>
+                    </tr>
+                    <tr>
+                    <td id="left"><h3>Correo:</h3></td><td><p> ${cita.correo}</p></td>
+                    </tr>
+                    <tr>
+                    <td id="left"><h3>Teléfono:</h3></td><td><p> ${cita.telefono}</p></td>
+                    </tr>
+                    <tr>
+                    <td id="left"><h3>Estado:</h3></td><td> <p>${cita.estado}</p></td>
+                    </tr>
+                    <tr>
+                    <td id="left"><h3>Servicio:</h3></td><td><p> ${nombreServicio}</p></td>
+                    </tr>
+                    </table>
                     ${mostrarBotonAceptar ? `<button class="boton-chico" onclick="aceptarCita('${cita.num_Cita}', '${cita.telefono}')"><a>Aceptar cita</a></button>` : ''}
                 `;
                 container.appendChild(citaCard);

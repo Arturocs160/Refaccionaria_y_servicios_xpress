@@ -76,7 +76,7 @@ body{
 
 .card {
     display: flex;
-    justify-content: center;
+    justify-content: start;
     flex-direction: column;
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -86,14 +86,16 @@ body{
     box-sizing: border-box;
     background-color:  rgb(217,217,217);
 }
-
+#left{
+    background-color: rgb(199, 199, 199);
+}
+td{
+    border-color: black;
+}
 .card p{
     display: flex;
-    justify-content: center;
-}
-
-.servicio {
-    text-align: center;
+    justify-content: start;
+    border: 1 solid rgb(217,50,50);
 }
 
 
