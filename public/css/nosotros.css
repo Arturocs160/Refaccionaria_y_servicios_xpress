@@ -1,3 +1,6 @@
+body{
+    overflow:hidden;
+}
 .izquierda-nosotros{
     width: 40%;
     display: flex;

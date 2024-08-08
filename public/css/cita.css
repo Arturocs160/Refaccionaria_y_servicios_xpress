@@ -1,9 +1,13 @@
 
+body{
+    overflow:hidden;
+}
+
 .mensaje{
-    width: 90%;
-    height: 200px;
+    width: 70%;
+    height: 100px;
     background-color: rgb(217,50,50);
-    margin: 10px auto 50px auto;
+    margin: 10px auto 10px auto;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -13,20 +17,20 @@
 }
 .mensaje h3{
     color: white;
-    font-size: 50px;
+    font-size: 30px;
     text-align: center;
 }
 .opciones{
     width: 100%;
     display: flex;
-    margin: 50px auto;
+    margin: 15px auto;
     flex-direction: row;
     justify-content: center;
     align-items: center;
 }
 .agendar-consultar{
-    width: 35%;
-    height: 500px;
+    width: 30%;
+    height: 300px;
     background-color: rgb(217,217,217);
     margin: auto 100px;
     display: flex;
@@ -36,8 +40,8 @@
     border-radius: 20px;
 }
 .agendar-consultar img{
-    width: 300px;
-    height: 300px;
+    width: 150px;
+    height: 150px;
     flex-direction: column;
 }
 
@@ -92,8 +96,8 @@
     border: 0.5px solid rgb(118, 115, 115);
 }
 .marco{
-    width: 50%;
-    height: 570px;
+    width: 45%;
+    height: 450px;
     background-color: rgb(217,217,217);
     display: flex;
     flex-direction: column;
@@ -151,6 +155,7 @@
     justify-content: center;
     margin-bottom: 50px ;
 }
+
 
 
 @media(max-width:800px){
