@@ -50,6 +50,17 @@
     justify-content: center;
     align-items: center;
 }
+.boton-chico{
+    background-color: rgb(217,50,50);
+    padding: 4px 20px;
+    border-radius: 25px;
+    margin-top: 10px;
+    border:1px solid rgb(217,50,50);
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; 
+    transition: all 0.3s;
+    color: white;
+}
 
 @media(max-width:800px){
     .container{

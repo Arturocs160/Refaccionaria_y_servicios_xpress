@@ -40,9 +40,9 @@
                 <h4>Apellido Materno</h4>
             </div>
             <div class="capturar-datos">
-                <input name="nombre_Cliente" id="nombre_Cliente" type="text" required>
-               <input name="apellido1" type="text" id="apellido1" required>
-               <input name="apellido2" id="apellido2" type="text">
+                <input name="nombre_Cliente" id="nombre_Cliente" type="text" pattern="[A-Za-z\s]+" required oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '');">
+                <input name="apellido1" type="text" id="apellido1" pattern="[A-Za-z\s]+" required oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '');">
+                <input name="apellido2" type="text" id="apellido2" pattern="[A-Za-z\s]+" oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '');">
             </div>
         </div>
         </div>
@@ -53,7 +53,8 @@
                 </div>
                 <div class="capturar-datos">
                    <input name="correo" id="correo" type="email" required> 
-                   <input name="telefono" id="telefono" type="text" required>
+                   <input name="telefono" id="telefono" type="text" pattern="\d{10}" maxlength="10" required oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+
                 </div>
                 </div>
 
@@ -65,12 +66,16 @@
                 <h4>Hora</h4>
             </div>
             <div class="capturar-datos">
-            <select name="id_Servicio" id="servicios-lista" required >
+            <select  name="id_Servicio" id="servicios-lista" required >
+                <option value="" disabled selected>SELECCIONE UN SERVICIO</option>
                 </select>
-               <input autocomplete="off" name="fecha" type="text" id="fechas" required>
+                
+               <input placeholder="SELECCIONE UNA FECHA" autocomplete="off" name="fecha" type="text" id="fechas" required>
                <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
         
-               <select name="hora" id="horas"></select>
+               <select  name="hora" id="horas">
+                <option value="" disabled selected>SELECCIONE UNA HORA</option>
+               </select>
             </div>
     </div>
     <div class="boton">
@@ -95,7 +100,6 @@
 </footer>
 </body>
 
-
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         inicializarPikaday();
@@ -107,8 +111,6 @@
             format: 'YYYY-MM-DD',
             minDate: new Date(), // Establece la fecha mínima como la fecha actual
             toString(date, format) {
-                // you should do formatting based on the passed format,
-                // but we will just return 'D/M/YYYY' for simplicity
                 const day = date.getDate();
                 const month = date.getMonth() + 1;
                 const year = date.getFullYear();
@@ -123,64 +125,71 @@
                 fetch(`/api/citas/${formattedDate}`)
                     .then(response => response.json())
                     .then(reservedTimes => {
-                        actualizarHoras(reservedTimes);
+                        actualizarHoras(reservedTimes, date);
                     });
             }
         });
     }
 
-    function actualizarHoras(reservedTimes) {
+    function actualizarHoras(reservedTimes, selectedDate) {
         const timepicker = document.getElementById('horas');
         timepicker.innerHTML = ''; // Limpiar las opciones anteriores
 
-        const horasDisponibles = ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30',
+        const horasDisponibles = [
+            '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30',
             '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00'
         ];
+//Se agrega "Deshabilitar horas disponibles segun la hora actual"
+        const ahora = new Date();
+        const esHoy = selectedDate.toDateString() === ahora.toDateString();
+        const horaActual = obtenerHoraActual();
 
         horasDisponibles.forEach(time => {
             const option = document.createElement('option');
             option.value = time;
             option.text = time;
-            if (reservedTimes.includes(time)) {
+            if (reservedTimes.includes(time) || (esHoy && time < horaActual)) {
                 option.disabled = true;
             }
             timepicker.add(option);
         });
-}
+    }
 
+    function obtenerHoraActual() {
+        const ahora = new Date();
+        const horas = ahora.getHours().toString().padStart(2, '0');
+        const minutos = ahora.getMinutes().toString().padStart(2, '0');
+        return `${horas}:${minutos}`;
+    }
 
     fetch('/api/servicios')
         .then(response => response.json())
         .then(servicios => {
             const serviciosLista = document.getElementById('servicios-lista');
-            servicios.forEach(servicios => {
+            servicios.forEach(servicio => {
                 const serviciosOpcion = document.createElement('option');
-                serviciosOpcion.innerHTML = 
-                    serviciosOpcion.value = servicios.id_Servicio;
-                    serviciosOpcion.textContent = servicios.nombre_Servicio;
-                    serviciosLista.appendChild(serviciosOpcion);
-               });
-           })
+                serviciosOpcion.value = servicio.id_Servicio;
+                serviciosOpcion.textContent = servicio.nombre_Servicio;
+                serviciosLista.appendChild(serviciosOpcion);
+            });
+        })
         .catch(error => console.error('Error fetching productos:', error));
 
-
-    
-
     document.getElementById('formularioCitas').addEventListener('submit', function(event) {
-      event.preventDefault(); // Evitar el envío del formulario por defecto
+        event.preventDefault(); // Evitar el envío del formulario por defecto
 
-      const data = {
-        nombre_Cliente: document.getElementById('nombre_Cliente').value,
-        apellido1: document.getElementById('apellido1').value,
-        apellido2: document.getElementById('apellido2').value,
-        correo: document.getElementById('correo').value,
-        telefono: document.getElementById('telefono').value,
-        id_Servicio: document.getElementById('servicios-lista').value,
-        fecha: document.getElementById('fechas').value,
-        hora: document.getElementById('horas').value
-      };
+        const data = {
+            nombre_Cliente: document.getElementById('nombre_Cliente').value,
+            apellido1: document.getElementById('apellido1').value,
+            apellido2: document.getElementById('apellido2').value,
+            correo: document.getElementById('correo').value,
+            telefono: document.getElementById('telefono').value,
+            id_Servicio: document.getElementById('servicios-lista').value,
+            fecha: document.getElementById('fechas').value,
+            hora: document.getElementById('horas').value
+        };
 
-      fetch('/agendarCita', {
+        fetch('/agendarCita', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -210,6 +219,6 @@
     });
 </script>
 
-
+      
 
 </html>

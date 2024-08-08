@@ -34,6 +34,10 @@
         <div class="izquierda-contacto">
             <div class="inf-contacto">
                 <img src="/resources/assets/telefono.png" alt="">
+                <h5><a href="https://maps.app.goo.gl/rmb2Hm4h3Z6c9DBr9" >Avenida niños héroes de Chapultepec #301 col Santiago Tula Tehuacán Puebla México</a></h5> 
+            </div>
+            <div class="inf-contacto">
+                <img src="/resources/assets/telefono.png" alt="">
                 <h5>238 141 3132 </h5> 
             </div>
             <div class="inf-contacto">
@@ -50,10 +54,26 @@
             </div>
         </div>
         <div class="derecha-contacto">
-                <h3>Ubicación</h3>
-                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1061.8245981754164!2d-97.38983894356265!3d18.487612274056303!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85c5a36c361a4c63%3A0xacfb908028b6c287!2sServicio%20de%20motos%20y%20Refacciones%20Express!5e0!3m2!1ses-419!2smx!4v1722019164357!5m2!1ses-419!2smx" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <h3>Ubicación</h3>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1061.8245981754164!2d-97.38983894356265!3d18.487612274056303!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85c5a36c361a4c63%3A0xacfb908028b6c287!2sServicio%20de%20motos%20y%20Refacciones%20Express!5e0!3m2!1ses-419!2smx!4v1722019164357!5m2!1ses-419!2smx" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <br>
+            <button class="boton-chico" onclick="getDirections()">Como llegar</button>
         </div>
     </div>
 </body>
+<script>
+    function getDirections() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+                const destination = "18.487534820409465, -97.38957079510779"; // Coordenadas del Taller
+                const url = `https://www.google.com/maps/dir/?api=1&origin=${latitude},${longitude}&destination=${destination}`;
+                window.open(url, "_blank");
+            });
+        } else {
+            alert("Geolocalización no es soportada por este navegador.");
+        }
+    }
+</script>
 </html>
-
