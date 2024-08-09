@@ -9,6 +9,12 @@ body {
   justify-content: center;
   align-items: center;
 }
+textarea {
+  width: 100%; /* Ajusta el ancho al 100% del contenedor */
+  height: 100px; /* Ajusta la altura según tus necesidades */
+  box-sizing: border-box; /* Incluye el padding y el border en el width y height */
+}
+
 label {
   font-size: 0.88em;
   line-height: 2;
@@ -18,37 +24,66 @@ img {
   height: 200px;
 }
 .contenedor {
-  height: 60%;
-  width: 1100px;
+  height: 80%;
+  width: 1000px;
   background-color: #f2f2f2;
   margin-top: 0.5%;
   display: flex;
+  flex-wrap: wrap;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   position: relative;
 }
-.contenedor__items {
-  width: 60%;
-  height: 4%;
+.contenedor_form{
+ 
+  display: grid;
+  height: 100%;
+  width: 100%;
+  flex-wrap: wrap;
+  background-color: #f2f2f2;
+  margin-top: 0.5%;
+  grid-template-columns: 50% 50%;
+}
+.items{
+  width: 80%;
+  height: auto;
   border: none;
   margin-left: 10px;
   background-color: #d9d9d9;
-  display: flex;
-  padding: 10px;
-  margin: 7.5px;
+  display: grid;
+  padding: 5px;
+  margin: 5px 10% ;
   border-radius: 15px;
+  grid-column: 1/2;
 }
-.contenedor__items input {
-  width: calc(100%-60px);
+.items input {
+  width: 65%;
   height: 100%;
   border: none;
-  margin-left: 10px;
+  margin-left: 10px; 
   background-color: transparent;
+
 }
-.contenedor__items--2 {
-  height: 6%;
+#desc_Produc {
+  height: 100px;
+ 
 }
+#desc_Servicio {
+  height: 100px;
+
+}
+  .actual{
+  width: 80%;
+  height: 90%;
+  border: none;
+  margin: 0 5%;
+  background-color: #d9d9d9;
+  grid-column: 2/2;
+  grid-row-start: 1;
+    grid-row-end: 5;
+}
+
 .contenedor__img {
   width: 50px;
   height: 50px;
@@ -58,11 +93,13 @@ img {
   top: 50px;
   left: 50px;
 }
+
 .contenedor__img--cierre {
   width: 50px;
   height: 50px;
   object-fit: cover;
 }
+
 .button {
   background-color: rgb(221, 55, 55);
   color: white;
@@ -72,25 +109,17 @@ img {
   transition: all 0.3s;
   cursor: pointer;
 }
-.button:hover {
-  background-color:#d9d9d9;
-  color: white;
-  margin-top: 20px;
-  padding: 10px 30px;
-  border-radius: 15px;
-  cursor: pointer;
-}
-.contenedor__items img {
+
+.items img {
   max-width: 2000px;
   height: auto;
   margin-top: 10px;
 }
 
-.contenedor__items img#img_actual {
-  max-width: 100%;
-  height: auto;
-  border-radius: 5px;
-  margin-bottom: 10px;
+.actual img {
+  max-width: 80%;
+  height: 80%;
+  margin: 2% 25%;
   display: block;
 }
 
@@ -101,11 +130,13 @@ img {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  
   font-size: 16px;
 }
 
 .button:hover {
   background-color: #45a049;
+  transition: all 0.3s;
 }
 @media(max-width:600px){
   body {
