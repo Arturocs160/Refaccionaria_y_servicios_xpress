@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Edición de servicios</title>
+  <title>Edición de Servicios</title>
   <link rel="stylesheet" href="/resources/css/styles.css" />
- 
 </head>
 <body>
   <div class="contenedor">
@@ -38,10 +37,15 @@
       </div>
       <div class="contenedor__items">
         <label for="imagen_servicio">
-          Imagen:
-          <input required type="file" name="imagen_servicio" id="imagen_servicio" accept="image/*">
+          Cambiar Imagen:
+          <input type="file" name="imagen_servicio" id="imagen_servicio" accept="image/*">
         </label>
-       
+      </div>
+      <div class="contenedor__items">
+        <label>
+          Imagen Actual:
+          <img id="imagenActual" src="" alt="Imagen actual del servicio">
+        </label>
       </div>
       <button type="submit" class="button">Guardar</button>
       </form>

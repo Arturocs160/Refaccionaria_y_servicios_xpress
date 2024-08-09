@@ -53,32 +53,31 @@ const upload = multer({ storage: storage });
  
   //Actualizar Servicio
   router.put('/api/servicios/:id', upload.single('imagen_servicio'), (req, res) => {
-  const { id } = req.params;
-  const { nombre_Servicio, desc_Servicio, precio } = req.body;
-  let url_Img;
-
-  if (req.file) {
-    url_Img = `/uploads/${req.file.filename}`;
-  } else {
-    url_Img = req.body.url_Img;
-  }
-
-  const servicioActualizado = { nombre_Servicio, desc_Servicio, precio, url_Img };
-
-  connection.query(
-    'UPDATE servicios SET ? WHERE id_Servicio = ?',
-    [servicioActualizado, id],
-    (err, result) => {
-      if (err) {
-        console.error('Error al actualizar el servicio:', err);
-        res.status(500).json({ message: 'Error al actualizar el servicio' });
-      } else {
-        res.json({ message: 'Servicio actualizado con éxito' });
-      }
+    const { id } = req.params;
+    const { nombre_Servicio, desc_Servicio, precio } = req.body;
+    let url_Img;
+  
+    if (req.file) {
+      url_Img = `/uploads/${req.file.filename}`;
+    } else {
+      url_Img = req.body.url_Img;
     }
-  );
-});
-
+  
+    const servicioActualizado = { nombre_Servicio, desc_Servicio, precio, url_Img };
+  
+    connection.query(
+      'UPDATE servicios SET ? WHERE id_Servicio = ?',
+      [servicioActualizado, id],
+      (err, result) => {
+        if (err) {
+          console.error('Error al actualizar el servicio:', err);
+          res.status(500).json({ message: 'Error al actualizar el servicio' });
+        } else {
+          res.json({ message: 'Servicio actualizado con éxito' });
+        }
+      }
+    );
+  });
 //Eliminar un Servicio
 
 router.delete('/servicios/:id_Servicio', (req, res) => {

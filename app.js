@@ -46,7 +46,7 @@ const upload = multer({ storage: storage });
   app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.listen(3000, (req,res)=>{
-    console.log("SERVER RUNNING IN http://localhost/3000");
+    console.log("SERVER RUNNING IN http://localhost:3000");
 });
 
 

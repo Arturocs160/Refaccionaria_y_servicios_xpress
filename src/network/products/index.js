@@ -52,12 +52,13 @@ router.post('/productos', upload.single('imagen_producto'), (req, res) => {
   // Actualizar Producto
   router.put('/productos/:id', upload.single('imagen_producto'), (req, res) => {
     const productId = req.params.id;
-    const { nombre_Produc, desc_Produc, precio, id_Categoria } = req.body;
-    const url_Img = req.file ? `/uploads/${req.file.filename}` : req.body.url_Img;
+    const { nombre_Produc, desc_Produc, precio, id_Categoria, url_Img } = req.body;
+    
+    const nuevaUrl_Img = req.file ? `/uploads/${req.file.filename}` : url_Img; // Usar nueva imagen solo si se sube
   
     connection.query(
       'UPDATE productos SET nombre_Produc=?, desc_Produc=?, precio=?, id_Categoria=?, url_Img=? WHERE id_Producto=?',
-      [nombre_Produc, desc_Produc, precio, id_Categoria, url_Img, productId],
+      [nombre_Produc, desc_Produc, precio, id_Categoria, nuevaUrl_Img, productId],
       (err, result) => {
         if (err) {
           console.error("Error al actualizar el producto:", err);
@@ -68,7 +69,6 @@ router.post('/productos', upload.single('imagen_producto'), (req, res) => {
       }
     );
   });
-  
   
 // Eliminar un producto
 router.delete('/productos/:id_Producto', (req, res) => {

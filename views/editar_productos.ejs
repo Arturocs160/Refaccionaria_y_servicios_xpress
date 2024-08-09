@@ -15,6 +15,7 @@
     <div class="contenedor__items">
       <form id="editarProductoForm">
         <input type="hidden" id="idProducto" name="id_Producto">
+        <input type="hidden" id="url_Img" name="url_Img"> 
         <label for="nombre_Produc">
           Producto:
           <input class="" type="text" placeholder="Producto" name="nombre_Produc" id="nombre_Produc" required>
@@ -43,59 +44,68 @@
     </div>
     <div class="contenedor__items">
         <label>
-          Imagen:
-          <input required type="file" name="imagen_producto" id="imagen_producto" accept="image/*" >
+          Cambiar Imagen:
+          <input type="file" name="imagen_producto" id="imagen_producto" accept="image/*">
         </label>
     </div>
-        <div>
-          <button type="submit" class="button">Guardar</button>
-        </div>
-      
-    
+    <div class="contenedor__items">
+      <label>
+        Imagen Actual:
+        <img id="img_actual" src="" alt="Imagen actual del producto" style="max-width: 100px;">
+      </label>
+    </div>
+    <div>
+      <button type="submit" class="button">Guardar</button>
+    </div>
   </form>
-   
-  </div>
+</div>
 
-  <script>
-    document.getElementById('btn_regreso').addEventListener('click', function() {
-      window.location.href = '/utilidades_admin/vistacrud';
-    });
+<script>
+  document.getElementById('btn_regreso').addEventListener('click', function() {
+    window.location.href = '/utilidades_admin/vistacrud';
+  });
 
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const productId = urlParams.get('id');
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const productId = urlParams.get('id');
 
-    fetch(`/api/productos/${productId}`)
-      .then(response => response.json())
-      .then(producto => {
-        document.getElementById('idProducto').value = producto.id_Producto;
-        document.getElementById('nombre_Produc').value = producto.nombre_Produc;
-        document.getElementById('desc_Produc').value = producto.desc_Produc;
-        document.getElementById('precio').value = producto.precio;
-        document.getElementById('id_Categoria').value = producto.id_Categoria;
-        document.getElementById('url_Img').value = producto.url_Img;
-      })
-      .catch(error => console.error('Error:', error));
+  fetch(`/api/productos/${productId}`)
+    .then(response => response.json())
+    .then(producto => {
+      document.getElementById('idProducto').value = producto.id_Producto;
+      document.getElementById('nombre_Produc').value = producto.nombre_Produc;
+      document.getElementById('desc_Produc').value = producto.desc_Produc;
+      document.getElementById('precio').value = producto.precio;
+      document.getElementById('id_Categoria').value = producto.id_Categoria;
+      document.getElementById('img_actual').src = producto.url_Img; // Muestra la imagen actual
+      document.getElementById('url_Img').value = producto.url_Img; // Guarda la URL de la imagen actual en un campo oculto
+    })
+    .catch(error => console.error('Error:', error));
 
-    document.getElementById('editarProductoForm').addEventListener('submit', function(event) {
-      event.preventDefault();
-      const formData = new FormData(this);
+  document.getElementById('editarProductoForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const formData = new FormData(this);
 
-      fetch(`/productos/${productId}`, {
-        method: 'PUT',
-        body: formData
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.message === 'Producto actualizado con éxito') {
-          alert('Producto actualizado con éxito');
-          window.location.href = '/utilidades_admin/vistacrud';
-        } else {
-          alert('Error al actualizar producto');
-        }
-      })
-      .catch(error => console.error('Error:', error));
-    });
-  </script>
+    // Solo agregar la URL de la imagen existente si no se seleccionó una nueva imagen
+    if (!formData.get('imagen_producto')) {
+      formData.set('url_Img', document.getElementById('url_Img').value);
+    }
+
+    fetch(`/productos/${productId}`, {
+      method: 'PUT',
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.message === 'Producto actualizado con éxito') {
+        alert('Producto actualizado con éxito');
+        window.location.href = '/utilidades_admin/vistacrud';
+      } else {
+        alert('Error al actualizar producto');
+      }
+    })
+    .catch(error => console.error('Error:', error));
+  });
+</script>
 </body>
 </html>

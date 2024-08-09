@@ -85,6 +85,28 @@ img {
   height: auto;
   margin-top: 10px;
 }
+
+.contenedor__items img#img_actual {
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.button {
+  background-color:  rgb(221, 55, 55);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.button:hover {
+  background-color: #45a049;
+}
 @media(max-width:600px){
   body {
     background-color: #fff;
