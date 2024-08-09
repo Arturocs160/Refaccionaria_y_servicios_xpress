@@ -4,26 +4,51 @@ const connection = require('../../../database/db');
 const PDFDocument = require('pdfkit');
 const moment = require('moment');
 require('moment/locale/es');
+// Ruta para el manejo del logo para pdf
+const path = require('path');
+const imagePath = path.join(__dirname, '..', '..', '..', 'public', 'assets', 'logo.png');
 
 
 //Agendar cita
 
-router.post('/agendarCita', async(req, res) => {
-    const {nombre_Cliente, apellido1, apellido2, telefono, correo, fecha, hora, id_Servicio} = req.body;
+router.post('/agendarCita', async (req, res) => {
+  const { nombre_Cliente, apellido1, apellido2, telefono, correo, fecha, hora, id_Servicio } = req.body;
 
-    connection.query('INSERT INTO citas SET  ?',
-        {nombre_Cliente:nombre_Cliente, apellido1:apellido1, apellido2:apellido2, telefono:telefono,correo:correo, fecha:fecha,
-          hora:hora, id_Servicio:id_Servicio},
-      async (error, result) => {
-        if(error){
-            console.log("Error " + error);
-        }
-        else{
-          res.json({ id: result.insertId });
-        }
-   });
+  connection.query('INSERT INTO citas SET ?', 
+  { nombre_Cliente, apellido1, apellido2, telefono, correo, fecha, hora, id_Servicio }, 
+  async (error, result) => {
+      if (error) {
+          console.log("Error " + error);
+          return res.status(500).json({ error: "Error al agendar la cita." });
+      }
+
+      const num_Cita = result.insertId;
+
+      // Creación del documento PDF
+      const doc = new PDFDocument();
+
+      res.writeHead(200, {
+          'Content-Type': 'application/pdf',
+          'Content-Disposition': `attachment; filename=cita_${num_Cita}.pdf`
+      });
+
+      // Contenido del PDF
+      doc.circle(60, 55, 50)
+          .fillOpacity(1)
+          .fillAndStroke("black", "#000");
+
+      doc.image(imagePath, 13, 5, { fit: [100, 100], align: 'center', valign: 'center' });
+      doc.moveDown(1);
+      doc.fontSize(25).text('Cita agendada', { align: 'center' });
+      doc.moveDown();
+      doc.fontSize(12);
+      doc.text(`Su número de cita es: ${num_Cita}`);
+
+      // Enviar el PDF como respuesta
+      doc.pipe(res);
+      doc.end();
+  });
 });
-
 
 // Obtener horas de citas disponibles
 router.get('/api/citas/:date', (req, res) => {
@@ -91,9 +116,7 @@ router.delete('/api/cancelar-cita/:num_Cita', (req, res) => {
   });
 });
 
-// Ruta para el manejo del reporte
-const path = require('path');
-const imagePath = path.join(__dirname, '..', '..', '..', 'public', 'assets', 'logo.png');
+
 
 router.post('/reporte', (req, res)=>{
   const {fechaInicio, fechaFin} = req.body;
