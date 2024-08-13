@@ -12,7 +12,8 @@
       <img style="background-color: transparent; border-style: none; cursor: pointer;" src="/resources/assets/cerrar.png" id="btn_regreso" class="contenedor__img--cierre">
     </div>
     <div><img src="/resources/assets/img1.png"></div>
-    <div class="contenedor__items">
+    <div class="contenedor_form">
+    <div class="items">
       <form id="editarProductoForm">
         <input type="hidden" id="idProducto" name="id_Producto">
         <input type="hidden" id="url_Img" name="url_Img"> 
@@ -21,19 +22,19 @@
           <input class="" type="text" placeholder="Producto" name="nombre_Produc" id="nombre_Produc" required>
         </label>
     </div>
-    <div class="contenedor__items contenedor__items--2">
+    <div class="items">
         <label for="desc_Produc">
           Descripcion:
           <input class="" type="text" placeholder="Descripcion" name="desc_Produc" id="desc_Produc">
         </label>
     </div>
-    <div class="contenedor__items">
+    <div class="items">
         <label for="precio">
           Precio:
           <input class="" type="number" placeholder="$" name="precio" id="precio" required>
         </label>
     </div>
-    <div class="contenedor__items">
+    <div class="items">
         <label for="id_Categoria">
           Categoria:
           <select name="id_Categoria" id="id_Categoria">
@@ -42,21 +43,21 @@
           </select>
         </label>
     </div>
-    <div class="contenedor__items">
+    <div class="items">
         <label>
           Cambiar Imagen:
           <input type="file" name="imagen_producto" id="imagen_producto" accept="image/*">
         </label>
     </div>
-    <div class="contenedor__items">
+    <div class="actual">
       <label>
         Imagen Actual:
         <img id="img_actual" src="" alt="Imagen actual del producto" style="max-width: 100px;">
       </label>
-    </div>
-    <div>
+    </div></div>
+    
       <button type="submit" class="button">Guardar</button>
-    </div>
+    
   </form>
 </div>
 

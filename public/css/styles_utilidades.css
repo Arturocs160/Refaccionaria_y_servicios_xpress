@@ -23,7 +23,7 @@ h3 {
 }
 .container {
   display: flex;
-  width: 1100px;
+  width: 600px;
   height: 600px;
   justify-content: center;
   align-items: center;
@@ -31,7 +31,7 @@ h3 {
   margin: auto;
 }
 .container__items {
-  width: 400px;
+  width: 450px;
   height: 475px;
   background-color: #dad8d8;
   margin: 0 4%;

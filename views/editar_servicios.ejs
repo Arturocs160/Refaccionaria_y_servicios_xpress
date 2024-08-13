@@ -12,10 +12,11 @@
       <a>
         <img style="background-color: transparent; border-style: none; cursor: pointer;" src="/resources/assets/cerrar.png" id="btn_regreso" class="contenedor__img--cierre"/>
       </a>
-    </div>
-    <div><img src="/resources/assets/img1.png"/></div>
-    <div class="contenedor__items">
-      <form id="editarServicioForm" enctype="multipart/form-data">
+    </div><div><img src="/resources/assets/img1.png"/></div>
+  
+  <div class="contenedor_form">
+    <div class="items">
+      <form id="editarServicioForm" enctype="multipart/form-data" itemid="formulario">
         <input type="hidden" id="idServicio" name="id_Servicio">
         <input type="hidden" id="url_Img" name="url_Img">
         <label for="nombre_Servicio">
@@ -23,32 +24,34 @@
           <input required type="text" placeholder="Servicio" name="nombre_Servicio" id="nombre_Servicio"/>
         </label>
       </div>
-      <div class="contenedor__items contenedor__items--2">
+      <div class="items">
         <label for="desc_Servicio">
           Descripción:
           <input type="text" placeholder="Descripción" name="desc_Servicio" id="desc_Servicio"/>
         </label>
       </div>
-      <div class="contenedor__items">
+      <div class="items">
         <label for="precio">
           Precio:
           <input type="number" placeholder="$" name="precio" id="precio"/>
         </label>
       </div>
-      <div class="contenedor__items">
+      <div class="items">
         <label for="imagen_servicio">
           Cambiar Imagen:
           <input type="file" name="imagen_servicio" id="imagen_servicio" accept="image/*">
         </label>
       </div>
-      <div class="contenedor__items">
+      <div class="actual">
         <label>
           Imagen Actual:
           <img id="imagenActual" src="" alt="Imagen actual del servicio">
         </label>
-      </div>
+      </div></div>
+
       <button type="submit" class="button">Guardar</button>
       </form>
+  
     </div>
 
     <script>

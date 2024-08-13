@@ -53,7 +53,7 @@
                 </div>
                 <div class="capturar-datos">
                    <input name="correo" id="correo" type="email" required> 
-                   <input name="telefono" id="telefono" type="text" pattern="\d{10}" maxlength="10" required oninput="this.value = this.value.replace(/[^0-9]/g, '');" title="El teléfono debe tener exactamente 10 dígitos">
+                   <input name="telefono" id="telefono" type="text" pattern="\d{10}" maxlength="10" required oninput="this.value = this.value.replace(/[^0-9]/g, '');" oninvalid="this.setCustomValidity('Por favor, ingresa un numero de telefono de 10 digitos')"  oninput="this.setCustomValidity('')">
 
 
                 </div>
@@ -67,14 +67,14 @@
                 <h4>Hora</h4>
             </div>
             <div class="capturar-datos">
-            <select  name="id_Servicio" id="servicios-lista" required >
+            <select  name="id_Servicio" id="servicios-lista" required oninvalid="this.setCustomValidity('Por favor, selecciona un servicio')"  oninput="this.setCustomValidity('')">
                 <option value="" disabled selected>SELECCIONE UN SERVICIO</option>
                 </select>
                 
-               <input placeholder="SELECCIONE UNA FECHA" autocomplete="off" name="fecha" type="text" id="fechas" required>
+               <input placeholder="SELECCIONE UNA FECHA" autocomplete="off" name="fecha" type="text" id="fechas" required oninvalid="this.setCustomValidity('Por favor, selecciona un fecha')"  oninput="this.setCustomValidity('')">
                <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
         
-               <select  name="hora" id="horas">
+               <select  name="hora" id="horas" required oninvalid="this.setCustomValidity('Por favor, selecciona una hora')"  oninput="this.setCustomValidity('')">
                 <option value="" disabled selected>SELECCIONE UNA HORA</option>
                </select>
             </div>
@@ -183,30 +183,46 @@
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
-      })
-      .then(response => response.json())
-      .then(result => {
-        Swal.fire({
-          title: 'Registro Exitoso',
-          text: `El número con el que puedes consultar tu cita es: ${result.id}`,
-          icon: 'success',
-          confirmButtonText: 'OK'
-        }).then(()=>{
-            window.location.href ="/cita/agendar";
+        })
+        .then(response => {
+            if (response.ok) {
+                // Crear un blob a partir de la respuesta
+                return response.blob();
+            } else {
+                throw new Error('Hubo un problema al agendar la cita.');
+            }
+        })
+        .then(blob => {
+            // Mostrar alerta de éxito
+            Swal.fire({
+                title: 'Registro Exitoso',
+                text: 'Tu cita ha sido agendada correctamente.',
+                icon: 'success',
+                confirmButtonText: 'Descargar PDF'
+            }).then(() => {
+                // Crear un enlace para descargar el PDF
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'cita.pdf'; // Nombre del archivo
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                window.URL.revokeObjectURL(url); // Limpiar el objeto URL
+
+                // Redireccionar a la página de citas
+                window.location.href = "/cita";
+            });
+        })
+        .catch(error => {
+            Swal.fire({
+                title: 'Error',
+                text: "Ocurrio un error al agendar su cita, intente de nuevo",
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+            console.error('Error:', error);
         });
-      })
-      .catch(error => {
-        Swal.fire({
-          title: 'Error',
-          text: 'Hubo un problema con el registro',
-          icon: 'error',
-          confirmButtonText: 'OK'
-        });
-        console.error('Error:', error);
-      });
     });
 </script>
-
-      
-
 </html>
