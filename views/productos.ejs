@@ -48,26 +48,43 @@
             <a href="https://www.youtube.com/"><img src="/resources/assets/youtube.png" alt=""></a>
         </div>
     </footer>
-            <script>
-                fetch('/api/productos')
-                    .then(response => response.json())
-                    .then(productos => {
-                    const productosLista = document.getElementById('productos-lista');
-                    productos.forEach(producto => {
-                        const productoCard = document.createElement('div');
-                        productoCard.className = 'card';
-                        productoCard.innerHTML = `
-                        <img style="text-align: center;" src="${producto.url_Img}" alt="Imagen del producto">
-                        <h2>${producto.nombre_Produc}</h2>
-                        <p>Descripción: ${producto.desc_Produc}</p>
-                        <p>Precio: $${producto.precio}</p>
-                        
-                        `;
-                        productosLista.appendChild(productoCard);
-                    });
-                    })
-                .catch(error => console.error('Error fetching productos:', error));
-              </script>
+    <div id="zoom-overlay" class="zoom-overlay">
+        <img id="zoomed-image" class="zoomed-image" src="" alt="Imagen ampliada">
+    </div>
+
+    <script>
+        fetch('/api/productos')
+            .then(response => response.json())
+            .then(productos => {
+            const productosLista = document.getElementById('productos-lista');
+            productos.forEach(producto => {
+                const productoCard = document.createElement('div');
+                productoCard.className = 'card';
+                productoCard.innerHTML = `
+                <img style="text-align: center;" src="${producto.url_Img}" alt="Imagen del producto">
+                <h2>${producto.nombre_Produc}</h2>
+                <p>Descripción: ${producto.desc_Produc}</p>
+                <p>Precio: $${producto.precio}</p>
+                `;
+                productosLista.appendChild(productoCard);
+            });
+
+            // evento para mostrar la imagen en zoom
+            document.querySelectorAll('.card img').forEach(img => {
+                img.addEventListener('click', () => {
+                    const zoomOverlay = document.getElementById('zoom-overlay');
+                    const zoomedImage = document.getElementById('zoomed-image');
+                    zoomedImage.src = img.src;
+                    zoomOverlay.classList.add('visible');
+                });
+            });
+            })
+        .catch(error => console.error('Error fetching productos:', error));
+
+        // Cierra el zoom
+        document.getElementById('zoom-overlay').addEventListener('click', () => {
+            document.getElementById('zoom-overlay').classList.remove('visible');
+        });
+    </script>
 </body>
 </html>
-
