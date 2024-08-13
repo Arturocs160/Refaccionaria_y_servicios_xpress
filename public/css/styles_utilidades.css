@@ -23,7 +23,7 @@ h3 {
 }
 .container {
   display: flex;
-  width: 1200px;
+  width: 600px;
   height: 600px;
   justify-content: center;
   align-items: center;
@@ -31,7 +31,7 @@ h3 {
   margin: auto;
 }
 .container__items {
-  width: 100%;
+  width: 450px;
   height: 475px;
   background-color: #dad8d8;
   margin: 0 4%;
@@ -73,7 +73,7 @@ font-size: 70px;
   text-align: center;
 }
 .items__button {
-  width: 250px;
+  width: 300px;
   background-color: #d93232;
   padding: 10px 40px;
   font-size: 20px;
