@@ -43,7 +43,31 @@
     text-align: center;
     z-index: 10;
 }
-
+#blanco {
+    width: 200px;
+    height: 50px;
+    background-color: rgb(242,242,242);
+    padding: 10px 10px;
+    border-radius: 50px;
+    margin-top: 40px;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;    
+   
+}
+#blanco a{
+    font-size: 25px;
+   color:rgb(217,50,50); 
+   text-decoration: none;
+}
+#blanco:hover{
+   background-color: rgb(217,50,50);
+   transition: 0.8s;
+}
+#blanco a:hover{
+   font-size: 30px;
+   color:white; 
+   text-decoration: none;
+}
 @media (max-width: 800px) {
     .carousel {
         height: 50vh;
