@@ -29,33 +29,39 @@
 
     <div class="presentacion">
         <div class="contenido">
-        <h1>Refaccionaría y Servicios Xpress</h1>
-        <h2>¡Tu moto al 100!</h2> 
-        <button id="blanco"><a href="/cita">Agendar cita</a></button>
+            <h1>Refaccionaría y Servicios Xpress</h1>
+            <h2>¡Tu moto al 100!</h2> 
+            <button class="btn-h" id="blanco"><a href="/cita">Agendar cita</a></button>
+        </div>
+        <div class="carousel">
+            <div class="carousel-container">
+                <div class="carousel-images">
+                    <!--imagenes -->
+                </div>
+            </div>
         </div>
     </div>
+
     <div class="nombresec">
         <h1>Nuestros productos</h1>
     </div>
-        <div class="informacion">
-            <img src="/resources/assets/inicioproducto.jpeg" alt="producto">
-            <div class="descripción">
-                <h3>Contamos con una gran variedad de productos para tu motocicleta</h3>
-                <button id="rojo"><a href="/productos">Ver mas</a></button>
-            </div>
+    <div class="informacion">
+        <img src="/resources/assets/inicioproducto.jpeg" alt="producto">
+        <div class="descripción">
+            <h3>Contamos con una gran variedad de productos para tu motocicleta</h3>
+            <button id="rojo"><a href="/productos">Ver mas</a></button>
         </div>
-        <div class="nombresec">
-            <h1>Nuestros servicios</h1>
+    </div>
+    <div class="nombresec">
+        <h1>Nuestros servicios</h1>
+    </div>
+    <div class="informacion">
+        <div class="descripción">
+            <h3>Realizamos distintos servicios de mantenimiento correctivo y preventivo</h3>
+            <button id="rojo"><a href="/servicios">Ver mas</a></button>
         </div>
-        <div class="informacion">
-
-            <div class="descripción">
-                <h3>Realizamos distintos servicios de mantenimiento correctivo y preventivo</h3>
-                <button id="rojo"><a href="/servicios">Ver mas</a></button>
-            </div>
-            <img src="/resources/assets/servicios.jpeg" alt="">
-        </div>
-
+        <img src="/resources/assets/servicios.jpeg" alt="">
+    </div>
 
     <footer>
         <div class="contacto">
@@ -72,5 +78,35 @@
         </div>
     </footer>
 </body>
-</html>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/api/carrusel_img')  // Endpoint para obtener las imágenes del carrusel
+            .then(response => response.json())
+            .then(images => {
+                const carouselImagesDiv = document.querySelector('.carousel-images');
+                images.forEach(image => {
+                    const imgElement = document.createElement('img');
+                    imgElement.src = image.url_Img;
+                    imgElement.alt = 'Carrusel Image';
+                    carouselImagesDiv.appendChild(imgElement);
+                });
 
+                const totalImages = images.length;
+                let currentIndex = 0;
+                const intervalTime = 5000; // Tiempo en milisegundos (8 segundos)
+
+                function showNextImage() {
+                    currentIndex = (currentIndex + 1) % totalImages;
+                    const offset = -currentIndex * 100;
+                    carouselImagesDiv.style.transition = 'transform 1s ease-in-out'; 
+                    carouselImagesDiv.style.transform = `translateX(${offset}%)`;
+                }
+
+                setInterval(showNextImage, intervalTime); 
+            })
+            .catch(error => console.error('Error al cargar las imágenes del carrusel:', error));
+    });
+</script>
+
+
+</html>

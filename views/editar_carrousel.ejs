@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Edición Banner</title>
+    <link rel="stylesheet" href="/resources/css/editar_carrousel.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+</head>
+<body>
+    <div class="centro">
+        <button style="background-color: transparent; border-style: none; cursor: pointer;" id="btn_regreso">
+            <img src="/resources/assets/cerrar.png" alt="Cerrar"/>
+        </button>
+        <h2>Edición Banner</h2>
+        <div class="btn-agregar">
+            <input type="file" id="fileInput" accept="image/*" multiple>
+            <button class="guardar" onclick="guardarImagenes()">Guardar</button>
+        </div>
+        <table id="imageTable">
+            <thead>
+                <tr>
+                    <th>Imagen</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.getElementById('btn_regreso').addEventListener('click', function() {
+            window.location.href = '/utilidades_admin/';
+        });
+        function guardarImagenes() {
+            const fileInput = document.getElementById('fileInput');
+            if (fileInput.files.length === 0) {
+                alert('Selecciona al menos una imagen.');
+                return;
+            }
+
+            const formData = new FormData();
+            for (const file of fileInput.files) {
+                formData.append('imagenes_carrousel', file);
+            }
+
+            fetch('/api/carrousel', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Imágenes guardadas:', data);
+                fileInput.value = ''; 
+                cargarImagenes(); 
+            })
+            .catch(error => console.error('Error al guardar las imágenes:', error));
+        }
+
+        function cargarImagenes() {
+            fetch('/api/carrousel')
+            .then(response => response.json())
+            .then(imagenes => {
+                const tabla = document.getElementById('imageTable').getElementsByTagName('tbody')[0];
+                tabla.innerHTML = ''; 
+                imagenes.forEach(imagen => {
+                    const fila = document.createElement('tr');
+
+                    const celdaImagen = document.createElement('td');
+                    const imgElement = document.createElement('img');
+                    imgElement.src = imagen.url_Img;
+                    imgElement.alt = 'Imagen del carrusel';
+                    imgElement.style.maxWidth = '150px'; 
+                    celdaImagen.appendChild(imgElement);
+                    fila.appendChild(celdaImagen);
+
+                    const celdaEliminar = document.createElement('td');
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.textContent = 'Eliminar';
+                    deleteBtn.classList.add('delete-btn');
+                    deleteBtn.addEventListener('click', () => eliminarImagen(imagen.id_Carrusel));
+                    celdaEliminar.appendChild(deleteBtn);
+                    fila.appendChild(celdaEliminar);
+
+                    tabla.appendChild(fila);
+                });
+            })
+            .catch(error => console.error('Error al cargar las imágenes del carrusel:', error));
+        }
+
+        // eliminar una imagen del carrusel
+        function eliminarImagen(id) {
+            fetch(`/api/carrousel/${id}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Imagen eliminada:', data);
+                cargarImagenes(); 
+            })
+            .catch(error => console.error('Error al eliminar la imagen:', error));
+        }
+
+        document.addEventListener('DOMContentLoaded', cargarImagenes);
+    </script>
+</body>
+</html>

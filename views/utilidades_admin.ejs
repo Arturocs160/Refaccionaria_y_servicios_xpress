@@ -24,6 +24,7 @@
             Reporte de citas
           </button>
           <button id="btn_registroCitas" class="items__button">Ver registro de citas</button>
+          <button id="btn_editarCarrousel" class="items__button">Editar Carousel</button>
         </div>
       
       </div>
@@ -48,6 +49,9 @@
 
     document.getElementById('btn_registroCitas').addEventListener('click',function(){
       window.location.href = '/utilidades_admin/registro_citas';
+    })
+    document.getElementById('btn_editarCarrousel').addEventListener('click',function(){
+      window.location.href = '/utilidades_admin/editar_carrousel';
     })
   </script>
 </html>

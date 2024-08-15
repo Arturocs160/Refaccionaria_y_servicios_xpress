@@ -118,4 +118,7 @@ router.get('/utilidades_admin/reporte_citas', checkAuth, (req, res) => {
   res.render('reporte')
 })
 
+router.get('/utilidades_admin/editar_carrousel', checkAuth, (req, res) => {
+  res.render('editar_carrousel')
+})
 module.exports = router;

@@ -3,6 +3,8 @@ const registerRoutes = require("./register")
 const productsRoutes = require("./products")
 const servicesRoutes = require("./services")
 const datesRoutes = require("./dates")
+const carrouselRoutes = require("./carrousel")
+
 
 function routes(server){
 
@@ -11,6 +13,7 @@ function routes(server){
     server.use("/", productsRoutes)
     server.use("/", servicesRoutes)
     server.use("/", datesRoutes)
+    server.use("/", carrouselRoutes)
     
 }
 

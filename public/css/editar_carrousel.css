@@ -1,0 +1,140 @@
+body{
+    background-color: white;
+    padding: 0px;
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    font-family: sans-serif;
+}
+h2{
+    text-align: center;
+    font-size: 40px;
+    
+}
+
+.centro{
+    background-color: #f2f2f2;
+    width: 1100px;
+    height: 100%;
+    border-radius: 25px
+}
+#btn_regresar{
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: 0.02ms;
+}
+.nueva_foto {
+    display: flex;
+    width: 30%;
+    background-color: transparent;
+    height: 100%;
+    min-height: 240px;
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+    font-size: 50px;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.3s all ease;
+    -webkit-transition: 0.3s all ease;
+    -moz-transition: 0.3s all ease;
+    -ms-transition: 0.3s all ease;
+    -o-transition: 0.3s all ease;
+}
+.btn_agregar{
+    position: relative;
+    margin: auto;
+    padding: 5px;
+    width: 10em;
+    height: 1em;
+    background-color: #d93232;
+    border-radius: 15px;
+    cursor: pointer;
+}
+.texto{
+    margin: 0;
+    text-align: center;
+    color: #fff;
+    font-size: 14px;
+    
+}
+.agregar{
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+.guardar{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 12em;
+    font-size: 14px;
+    background-color:#d93232;
+    color:  rgb(255, 255, 255);
+    border-radius: 15px;
+    padding: 3.4px 50px;
+    margin: auto;
+    margin-top: 3px;
+    border: solid 1px rgb(255, 255, 255);
+    transition: 0.02;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+}
+.mini-carousel {
+    display: flex;
+    overflow-x: auto;
+    gap: 10px;
+    padding: 10px;
+}
+.mini-carousel img {
+    max-width: 150px;
+    max-height: 150px;
+    cursor: pointer;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+}
+.mini-carousel .delete-btn {
+    display: block;
+    margin-top: 5px;
+    background: red;
+    color: white;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 5px;
+}
+.centro {
+    text-align: center;
+    margin: 20px auto;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+table, th, td {
+    border: 1px solid #ddd;
+}
+th, td {
+    padding: 10px;
+    text-align: center;
+}
+th {
+    background-color: #f4f4f4;
+}
+.btn-agregar {
+    margin: 20px 0;
+}
+.guardar {
+    margin-top: 20px;
+}
