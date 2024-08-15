@@ -1,62 +1,56 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Registro</title>
-    <link rel="stylesheet" href="/resources/css/registro.css"/>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-  </head>
-  <body>
-    <div class="contenedor">
-      <div class="centro">
-        <h2 style="margin-bottom: 25px;">Registro de usuario</h2>
-        <div id="registros">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registro</title>
+  <link rel="stylesheet" href="/resources/css/registro.css"/>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+<body>
+  <div class="contenedor">
+    <div class="centro">
+      <h2 style="margin-bottom: 25px;">Registro de usuario</h2>
+      <div id="registros">
+        <form action="/register" method="post">
           <div class="registros_items">
-            <form action="/register" method="post">
-           <label for="">Nombre
-            <input type="text" class="input" name="nombreUsuario" id="nombreUsuario" required/>
-           </label>
+            <label for="nombreUsuario">Nombre</label>
+            <input type="text" class="input" name="nombreUsuario" id="nombreUsuario" pattern="[A-Za-záéíóúüñÁÉÍÓÚÜÑ\s]+" title="Ingrese solo letras y espacios" required />
           </div>
           <div class="registros_items">
-            <label for="">Apellido
-              <input type="text" class="input" name="apellidoUsuario" id="apellidoUsuario" required/>
-            </label>
+            <label for="apellidoUsuario">Apellido</label>
+            <input type="text" class="input" name="apellidoUsuario" id="apellidoUsuario" pattern="[A-Za-záéíóúüñÁÉÍÓÚÜÑ\s]+" title="Ingrese solo letras y espacios" required />
           </div>
-          <div>
-            <div class="registros_items">
-              <label for="">Usuario
-                <input type="text" class="input" name="usuario" id="usuario" required/>
-              </label>
-            </div>
-            <div class="registros_items">
-              <label for="">Contraseña 
-                <input type="password" name="contrasenia" id="contrasenia" class="input" required/>
-              </label>
-            </div>
+          <div class="registros_items">
+            <label for="usuario">Usuario</label>
+            <input type="text" class="input" name="usuario" id="usuario" required />
+          </div>
+          <div class="registros_items">
+            <label for="contrasenia">Contraseña</label>
+            <input type="password" name="contrasenia" id="contrasenia" class="input" pattern="(?=.*[!@#$%^&*.,?])[A-Za-z\d!@#$%^&*.,?]+" title="Debe contener al menos un carácter especial (como !@#$%^&*.,?)" required />
           </div>
           <button type="submit" id="sign-in" class="button">Registrarse</button>
         </form>
-        </div>
-        <div>
-          <p style="margin-top: 37px;">¿Ya tienes una cuenta? <a href="/login_admin">Iniciar sesión</a></p>
-        </div>
+      </div>
+      <div>
+        <p style="margin-top: 37px;">¿Ya tienes una cuenta? <a href="/login_admin">Iniciar sesión</a></p>
       </div>
     </div>
-  </body>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
-  <% if (typeof alert != "undefined")  { %>
-    <script>
-    Swal.fire({
-      title:'<%= alertTitle %>',
-      text:'<%= alertMessage %>',
-      icon:'<%= alertIcon %>',
-      showConfirmButton: <%= showConfirmButton %>,
-      timer: <%= timer %>
-    }).then(()=>{
-      window.location.href='<%= ruta %>'
-    })
-    </script>
-  <% } %>
+<% if (typeof alert != "undefined")  { %>
+<script>
+Swal.fire({
+  title:'<%= alertTitle %>',
+  text:'<%= alertMessage %>',
+  icon:'<%= alertIcon %>',
+  showConfirmButton: <%= showConfirmButton %>,
+  timer: <%= timer %>
+}).then(()=>{
+  window.location.href='<%= ruta %>'
+})
+</script>
+<% } %>
 </html>
