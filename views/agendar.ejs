@@ -53,8 +53,10 @@
                 </div>
                 <div class="capturar-datos">
                    <input name="correo" id="correo" type="email" required> 
-                   <input name="telefono" id="telefono" type="text" pattern="\d{10}" maxlength="10" required oninput="this.value = this.value.replace(/[^0-9]/g, '');" oninvalid="this.setCustomValidity('Por favor, ingresa un numero de telefono de 10 digitos')"  oninput="this.setCustomValidity('')">
-
+                   <input name="telefono" id="telefono" type="text" pattern="\d{10}" maxlength="10" required 
+                   oninput="this.value = this.value.replace(/[^0-9]/g, ''); this.setCustomValidity('');" 
+                   oninvalid="this.setCustomValidity('Por favor, ingresa un número de teléfono de 10 dígitos')">
+                   
 
                 </div>
                 </div>
