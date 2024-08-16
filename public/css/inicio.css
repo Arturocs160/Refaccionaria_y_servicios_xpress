@@ -1,7 +1,6 @@
 ::-webkit-scrollbar {
     display: none;
-}
-.carousel {
+}/*.carousel {
     width: 100%;
     height: 60vh;
     overflow: hidden;
@@ -43,6 +42,51 @@
     color: white;
     text-align: center;
     z-index: -1;
+    font-size: 35px;
+}*/
+.carousel {
+    width: 100%;
+    height: 60vh;
+    overflow: hidden;
+}
+
+.carousel-container {
+    display: flex;
+    height: 100%;
+}
+
+.carousel-images {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 1s ease-in-out;
+    z-index: -2;
+
+}
+
+.carousel-images img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.carousel img {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.presentacion {
+    width: 100%;
+    z-index: 1;
+}
+
+.contenido {
+    position: absolute;
+    top: 40%;
+    left: 30%;
+    transform: translate(-50%, -50%);
+    color: white;
+    text-align: center;
     font-size: 35px;
 }
 #blanco {
