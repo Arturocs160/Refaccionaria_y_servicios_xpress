@@ -242,7 +242,41 @@
     margin-left: 50px;
     margin-bottom: 80px;
 }
+.campos-agendar{
+    width: 100%;
+    display: flex ;
+    flex-direction: row;
+    justify-content: start;
+    align-items: flex-start;
 
+}
+.agendar-datos{
+    width: 40%;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    background-color: rgb(231, 231, 231);
+    color: rgb(217, 50, 50);
+}
+
+.capturar-datos{
+    width: 60%;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}
+.capturar-datos input{
+    width: 90%;
+    height: 30px;
+    border: 0.5px solid rgb(118, 115, 115);
+}
+.capturar-datos select{
+    width: 90%;
+    height: 30px;
+    border: 0.5px solid rgb(118, 115, 115);
+}
 
 .input-consultar h4{
     font-size: 20px;
