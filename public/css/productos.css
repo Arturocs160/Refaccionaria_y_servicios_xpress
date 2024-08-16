@@ -1,4 +1,6 @@
-
+::-webkit-scrollbar {
+    display: none;
+}
 .zoom-overlay {
     position: fixed;
     top: 0;
@@ -37,6 +39,7 @@
     background-color: rgb(217, 217, 217);
     display: grid;
     grid-template-columns: 30% 70%;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
 
 .card h2 {

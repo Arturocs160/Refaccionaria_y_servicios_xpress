@@ -1,7 +1,6 @@
-body{
-    overflow:hidden;
+::-webkit-scrollbar {
+    display: none;
 }
-
 .izquierda-contacto{
     width: 50%;
     display: flex;
@@ -10,7 +9,7 @@ body{
     margin: 0px 50px 50px 50px;   
     border-radius: 20px;
     padding: 0px 30px;
-
+    box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
 }
 
 .inf-contacto{
@@ -53,7 +52,7 @@ a:hover{
     justify-content: start;
     align-items: center;
     margin: 0px 50px 50px 50px;   
-}
+    box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;}
 
 .derecha-contacto iframe{
     width:80%;
@@ -76,6 +75,7 @@ a:hover{
 }
 
 @media(max-width:800px){
+ 
     .container{
         flex-direction: column;
     }
