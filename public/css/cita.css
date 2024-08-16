@@ -188,7 +188,7 @@
     
 }
 .mensaje h3{
-    font-size: 30px;
+    font-size: 25px;
 }
 .opciones{
     width: 100%;
@@ -198,7 +198,7 @@
 }
 .agendar-consultar{
     width: 60%;
-    height: 400px;
+    height: 250px;
     margin: auto 100px 40px 100px;
     padding: 20px;
 }
