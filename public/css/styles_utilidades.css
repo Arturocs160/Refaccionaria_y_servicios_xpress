@@ -6,6 +6,50 @@ body {
   margin: 0;
   padding: 0;
 }
+header {
+  height: 70px;
+  background-color: rgb(217,217,217);
+  padding: 0 100px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+header img{
+  width: 70px;
+  height: 50px;
+}
+.menu a{
+  color: black;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 0 50px;
+  transition: 0.4s; 
+  z-index: 100;
+}
+.mostrar-menu,
+.esconder-menu {
+  font-size: 20px;
+  cursor: pointer;
+  display: none;
+  transition: 0.4s;
+}
+
+.mostrar-menu {
+  order: 1;
+}
+.menu a:hover,
+.mostrar-menu:hover,
+.esconder-menu:hover {
+  color: rgb(217,50,50);
+}
+#check{
+  display: none;
+}
 img {
   width: 50px;
   height: 50px;
@@ -24,7 +68,7 @@ h3 {
 .container {
   display: flex;
   width: 600px;
-  height: 600px;
+  height: 500px;
   justify-content: center;
   align-items: center;
   text-align: center;
@@ -32,13 +76,13 @@ h3 {
 }
 .container__items {
   width: 450px;
-  height: 475px;
+  height: 500px;
   background-color: #dad8d8;
   margin: 0 4%;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 3% 0;
+  padding: 1% 0;
   text-align: center;
   border-radius: 20px;
   

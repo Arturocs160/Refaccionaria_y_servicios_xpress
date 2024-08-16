@@ -7,8 +7,26 @@
     <link rel="stylesheet" href="/resources/css/styles_utilidades.css" />
   </head>
   <body>
+    <header>
+      <a href="/"><img src="/resources/assets/logo.png" alt="logo Refaccionaría y servicios Xpress"></a>
+      <input type="checkbox" id="check">
+      <label for="check" class="mostrar-menu">
+          &#8801
+      </label> 
+       <nav class="menu">
+          <a href="/">Inicio</a>
+          <a href="/servicios">Servicios</a>
+          <a href="/cita">Cita</a>   
+          <a href="/productos">Productos</a>
+          <a href="/nosotros">Nosotros</a>
+          <a href="/contacto">Contacto</a>
+      <label for="check" class="esconder-menu">
+          &#215
+      </label>
+  </nav>
+  </header>
     <div class="principal">
-      <h2>Bienvenido "Administrador"</h2>
+      <h2>Administrador</h2></div>
       <div class="container">
         <div class="container__items button">
           <div>
@@ -28,7 +46,7 @@
         </div>
       
       </div>
-    </div>
+    
   </body>
   <script>
     document.getElementById('btn_regresar').addEventListener('click',function(){
