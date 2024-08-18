@@ -2,6 +2,9 @@
 const express = require('express');
 const app = express();
 
+const multer = require('multer');
+const path = require('path');
+
 // 2. Se setea urlencoded para capturar los datos del formulario
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
@@ -16,6 +19,7 @@ app.use('/resources', express.static(__dirname + '/public'));
 
 // 5. Establecemos el motor de plantillas ejs
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
 // 6. Var. de session
 const session = require('express-session');
@@ -29,8 +33,6 @@ app.use(session({
 const routes = require ("./src/network")
 routes(app)
 
-const multer = require('multer');
-const path = require('path');
 
 // Configuración de almacenamiento de Multer
 const storage = multer.diskStorage({
