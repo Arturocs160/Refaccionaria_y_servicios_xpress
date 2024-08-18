@@ -22,6 +22,7 @@ router.use((req, res, next) => {
 
 router.get('/', (req,res)=>{
     res.render('index');
+    res.setHeader('Content-Type', 'text/html');
 })
 
 router.get('/logout', (req, res) => {
