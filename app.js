@@ -14,7 +14,7 @@ dotenv.config({path:'./env/.env'});
 app.use('/resources', express.static('public'));
 app.use('/resources', express.static(__dirname + '/public'));
 
-// 5. Establecemos el motor de plantillas ejss
+// 5. Establecemos el motor de plantillas ejs
 app.set('view engine', 'ejs');
 
 // 6. Var. de session
@@ -43,8 +43,9 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
-  app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// Iniciar el servidor en el puerto 3000
 app.listen(3000, (req,res)=>{
     console.log("SERVER RUNNING IN http://localhost:3000");
 });

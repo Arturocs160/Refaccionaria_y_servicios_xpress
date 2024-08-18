@@ -21,7 +21,7 @@ router.use((req, res, next) => {
 
 
 router.get('/', (req,res)=>{
-    res.render('inicio');
+    res.render('index');
 })
 
 router.get('/logout', (req, res) => {
