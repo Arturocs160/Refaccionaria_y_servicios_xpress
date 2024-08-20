@@ -19,6 +19,7 @@ app.use('/resources', express.static(__dirname + '/public'));
 
 // 5. Establecemos el motor de plantillas ejs
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
 // 6. Var. de session
 const session = require('express-session');
